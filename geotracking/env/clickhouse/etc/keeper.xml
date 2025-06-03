@@ -1,0 +1,5 @@
+<clickhouse>
+  <keeper_server>
+    <tcp_port>9181</tcp_port>
+  </keeper_server>
+</clickhouse>

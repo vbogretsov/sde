@@ -1,0 +1,113 @@
+services:
+  s-1:
+    image: quay.io/apicurio/apicurio-registry:3.0.6
+    environment:
+      REGISTRY_LOG_LEVEL: INFO
+      REGISTRY_STORAGE_KIND: kafka
+      REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: b-1:9092,b-2:9092,b-3:9092
+      REGISTRY_KAFKASTORE_TOPIC: _registry
+      REGISTRY_KAFKASTORE_TOPIC_PARTITIONS: 3
+      REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: 3
+    depends_on: [ b-1, b-2, b-3 ]
+  b-1:
+    image: kafka:3.9.1
+    build: .
+    restart: on-failure
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://b-1:9092,CONTROLLER://b-1:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://b-1:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@b-1:9093,2@b-2:9093,3@b-3:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_HEAP_OPTS: "-Xms256M -Xmx2G"
+      KAFKA_JMX_OPTS: >
+        -javaagent:/opt/kafka/jmx/jmx_prometheus_exporter.jar=7071:/opt/kafka/jmx/jmx_prometheus_config.yml
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+    volumes:
+      - b-1:/var/lib/kafka/data
+      - ./jmx_prometheus_config.yml:/opt/kafka/jmx/jmx_prometheus_config.yml
+  b-2:
+    image: kafka:3.9.1
+    restart: on-failure
+    environment:
+      KAFKA_NODE_ID: 2
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://b-2:9092,CONTROLLER://b-2:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://b-2:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@b-1:9093,2@b-2:9093,3@b-3:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_HEAP_OPTS: "-Xms256M -Xmx2G"
+      KAFKA_JMX_OPTS: >
+        -javaagent:/opt/kafka/jmx/jmx_prometheus_exporter.jar=7071:/opt/kafka/jmx/jmx_prometheus_config.yml
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+    volumes:
+      - b-2:/var/lib/kafka/data
+      - ./jmx_prometheus_config.yml:/opt/kafka/jmx/jmx_prometheus_config.yml
+  b-3:
+    image: kafka:3.9.1
+    restart: on-failure
+    environment:
+      KAFKA_NODE_ID: 3
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://b-3:9092,CONTROLLER://b-3:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://b-3:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@b-1:9093,2@b-2:9093,3@b-3:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_HEAP_OPTS: "-Xms256M -Xmx2G"
+      KAFKA_JMX_OPTS: >
+        -javaagent:/opt/kafka/jmx/jmx_prometheus_exporter.jar=7071:/opt/kafka/jmx/jmx_prometheus_config.yml
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+    volumes:
+      - b-3:/var/lib/kafka/data
+      - ./jmx_prometheus_config.yml:/opt/kafka/jmx/jmx_prometheus_config.yml
+  b-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    restart: on-failure
+    hostname: k-ui
+    environment:
+      KAFKA_CLUSTERS_0_NAME: main
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: b-1:9092,b-2:9092,b-3:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://s-1:8080/apis/ccompat/v7
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: c-1
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://c-1:8083
+    ports:
+      - 18001:8080
+    depends_on: [ b-1, b-2, b-3 ]
+  e-b:
+    image: danielqsj/kafka-exporter:latest
+    restart: on-failure
+    ports:
+      - 9308:9308
+    command:
+      - "--kafka.server=b-1:9092"
+      - "--kafka.server=b-2:9092"
+      - "--kafka.server=b-3:9092"
+    depends_on: [ b-1, b-2, b-3 ]

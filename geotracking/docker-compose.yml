@@ -1,0 +1,230 @@
+services:
+  # Logs
+  flb:
+    extends:
+      file: env/fluentbit/docker-compose.yml
+      service: flb
+  # Metrics
+  v-1:
+    extends:
+      file: env/vmetrics/docker-compose.yml
+      service: v-1
+  v-a:
+    extends:
+      file: env/vmetrics/docker-compose.yml
+      service: v-a
+  e-node:
+    extends:
+      file: env/vmetrics/docker-compose.yml
+      service: e-node
+  e-docker:
+    extends:
+      file: env/vmetrics/docker-compose.yml
+      service: e-docker
+  g-1:
+    extends:
+      file: env/graphana/docker-compose.yml
+      service: g-1
+  # Proxy
+  proxy:
+    extends:
+      file: env/proxy/docker-compose.yml
+      service: proxy
+  # S3
+  s3-init:
+    extends:
+      file: env/minio/docker-compose.yml
+      service: s3-init
+  s3-1:
+    extends:
+      file: env/minio/docker-compose.yml
+      service: s3-1
+  s3-2:
+    extends:
+      file: env/minio/docker-compose.yml
+      service: s3-2
+  s3-3:
+    extends:
+      file: env/minio/docker-compose.yml
+      service: s3-3
+  # Red Panda
+  # p-1:
+  #   extends:
+  #     file: env/redpanda/docker-compose.yml
+  #     service: p-1
+  # p-2:
+  #   extends:
+  #     file: env/redpanda/docker-compose.yml
+  #     service: p-2
+  # p-3:
+  #   extends:
+  #     file: env/redpanda/docker-compose.yml
+  #     service: p-3
+  # p-ui:
+  #   extends:
+  #     file: env/redpanda/docker-compose.yml
+  #     service: p-ui
+  # Kafka
+  s-1:
+    extends:
+      file: env/kafka/docker-compose.yml
+      service: s-1
+  b-1:
+    extends:
+      file: env/kafka/docker-compose.yml
+      service: b-1
+  b-2:
+    extends:
+      file: env/kafka/docker-compose.yml
+      service: b-2
+  b-3:
+    extends:
+      file: env/kafka/docker-compose.yml
+      service: b-3
+  b-ui:
+    extends:
+      file: env/kafka/docker-compose.yml
+      service: b-ui
+  e-b:
+    extends:
+      file: env/kafka/docker-compose.yml
+      service: e-b
+  # Kafka Connect
+  c-1:
+    extends:
+      file: env/connect/docker-compose.yml
+      service: c-1
+  # MongoDB
+  m-1:
+    extends:
+      file: env/mongo/docker-compose.yml
+      service: m-1
+  m-2:
+    extends:
+      file: env/mongo/docker-compose.yml
+      service: m-2
+  m-3:
+    extends:
+      file: env/mongo/docker-compose.yml
+      service: m-3
+  e-m:
+    extends:
+      file: env/mongo/docker-compose.yml
+      service: e-m
+  # ClickHouse
+  chk-1:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: chk-1
+  chk-2:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: chk-2
+  chk-3:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: chk-3
+  ch-1:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: ch-1
+  ch-2:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: ch-2
+  ch-3:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: ch-3
+  # Application
+  app-init:
+    extends:
+      file: app/docker-compose.yml
+      service: app-init
+    profiles: [ app ]
+    # depends_on: [ flb ]
+  app-1:
+    extends:
+      file: app/docker-compose.yml
+      service: app-1
+    profiles: [ app ]
+  app-2:
+    extends:
+      file: app/docker-compose.yml
+      service: app-2
+    profiles: [ app ]
+    # depends_on: [ flb ]
+  wrk-1:
+    extends:
+      file: app/docker-compose.yml
+      service: wrk-1
+    profiles: [ app ]
+    # depends_on: [ flb ]
+  wrk-2:
+    extends:
+      file: app/docker-compose.yml
+      service: wrk-2
+    profiles: [ app ]
+  wrk-3:
+    extends:
+      file: app/docker-compose.yml
+      service: wrk-3
+    profiles: [ app ]
+  wrk-4:
+    extends:
+      file: app/docker-compose.yml
+      service: wrk-4
+    profiles: [ app ]
+  dp:
+    extends:
+      file: app/docker-compose.yml
+      service: dp
+    profiles: [ app ]
+    # depends_on: [ flb ]
+  aws:
+    image: xueshanf/awscli
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY}
+    volumes:
+      - ./data/demo:/data/demo
+      - ./data/prev:/data/prev
+      - ./bin/upload-demo.sh:/usr/local/bin/upload-demo.sh
+    profiles: [ manual ]
+
+  wrkx:
+    image: wrkx:1
+    build: perf/wrkx
+    profiles:
+      - manual
+    volumes:
+      - ./perf/wrkx/src:/src
+
+
+volumes:
+  flb: null
+  m-1: null
+  m-2: null
+  m-3: null
+  b-1: null
+  b-2: null
+  b-3: null
+  p-1: null
+  p-2: null
+  p-3: null
+  chk-1: null
+  chk-2: null
+  chk-3: null
+  ch-1: null
+  ch-2: null
+  ch-3: null
+  s3-1: null
+  s3-2: null
+  s3-3: null
+  v-1: null
+
+networks:
+  default:
+    name: nw-geo
+    external: true

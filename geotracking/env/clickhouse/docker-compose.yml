@@ -1,0 +1,81 @@
+services:
+  chk-1:
+    image: clickhouse/clickhouse-keeper:25.5
+    restart: on-failure
+    environment:
+      KEEPER_SERVER_ID: 1
+    volumes:
+      - ./etc/chk.xml:/etc/clickhouse-keeper/keeper_config.xml
+      - chk-1:/var/lib/clickhouse
+  chk-2:
+    image: clickhouse/clickhouse-keeper:25.5
+    restart: on-failure
+    environment:
+      KEEPER_SERVER_ID: 2
+    volumes:
+      - ./etc/chk.xml:/etc/clickhouse-keeper/keeper_config.xml
+      - chk-2:/var/lib/clickhouse
+  chk-3:
+    image: clickhouse/clickhouse-keeper:25.5
+    environment:
+      KEEPER_SERVER_ID: 3
+    volumes:
+      - ./etc/chk.xml:/etc/clickhouse-keeper/keeper_config.xml
+      - chk-3:/var/lib/clickhouse
+  ch-1:
+    image: clickhouse:25.5
+    restart: on-failure
+    ports:
+     - 18123:8123
+     - 19000:9000
+    environment:
+      REPLICA: 1
+      CLICKHOUSE_ADMIN_PASSWORD: ${CLICKHOUSE_ADMIN_PASSWORD}
+      CLICKHOUSE_DEFAULT_PASSWORD: ${CLICKHOUSE_DEFAULT_PASSWORD}
+      CLICKHOUSE_CLUSTER_SECRET: ${CLICKHOUSE_CLUSTER_SECRET}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY}
+    volumes:
+      - ./etc/users.xml:/etc/clickhouse-server/users.xml
+      - ./etc/ch.xml:/etc/clickhouse-server/config.xml
+      - ./etc/keeper.xml:/etc/clickhouse-server/keeper_config.xml
+      - ch-1:/var/lib/clickhouse
+    depends_on: [chk-1, chk-2, chk-3]
+  ch-2:
+    image: clickhouse:25.5
+    restart: on-failure
+    ports:
+     - 28123:8123
+     - 29000:9000
+    environment:
+      REPLICA: 2
+      CLICKHOUSE_ADMIN_PASSWORD: ${CLICKHOUSE_ADMIN_PASSWORD}
+      CLICKHOUSE_DEFAULT_PASSWORD: ${CLICKHOUSE_DEFAULT_PASSWORD}
+      CLICKHOUSE_CLUSTER_SECRET: ${CLICKHOUSE_CLUSTER_SECRET}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY}
+    volumes:
+      - ./etc/users.xml:/etc/clickhouse-server/users.xml
+      - ./etc/ch.xml:/etc/clickhouse-server/config.xml
+      - ./etc/keeper.xml:/etc/clickhouse-server/keeper_config.xml
+      - ch-2:/var/lib/clickhouse
+    depends_on: [chk-1, chk-2, chk-3]
+  ch-3:
+    image: clickhouse:25.5
+    restart: on-failure
+    ports:
+     - 38123:8123
+     - 39000:9000
+    environment:
+      REPLICA: 3
+      CLICKHOUSE_ADMIN_PASSWORD: ${CLICKHOUSE_ADMIN_PASSWORD}
+      CLICKHOUSE_DEFAULT_PASSWORD: ${CLICKHOUSE_DEFAULT_PASSWORD}
+      CLICKHOUSE_CLUSTER_SECRET: ${CLICKHOUSE_CLUSTER_SECRET}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_KEY}
+    volumes:
+      - ./etc/users.xml:/etc/clickhouse-server/users.xml
+      - ./etc/ch.xml:/etc/clickhouse-server/config.xml
+      - ./etc/keeper.xml:/etc/clickhouse-server/keeper_config.xml
+      - ch-3:/var/lib/clickhouse
+    depends_on: [chk-1, chk-2, chk-3]

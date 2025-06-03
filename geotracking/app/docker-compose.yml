@@ -1,0 +1,228 @@
+services:
+  app-init:
+    image: geotracking/app:1
+    command: ["init"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: init
+      pod.name: app.init
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${APP_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_TOPIC_NUM_PARTITIONS: ${KAFKA_TOPIC_NUM_PARTITIONS}
+      KAFKA_TOPIC_REPLICATION_FACTOR: ${KAFKA_TOPIC_REPLICATION_FACTOR}
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.init
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  app-1:
+    image: geotracking/app:1
+    build: be
+    command: ["svc"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: svc
+      pod.name: app.svc-1
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${APP_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_PRODUCER_BATCH_SIZE: ${KAFKA_PRODUCER_BATCH_SIZE}
+      KAFKA_PRODUCER_BATCH_TIMEOUT: ${KAFKA_PRODUCER_BATCH_TIMEOUT}
+    depends_on:
+      - app-init
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.svc
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  app-2:
+    image: geotracking/app:1
+    command: ["svc"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: svc
+      pod.name: app.svc-2
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${APP_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      KAFKA_PRODUCER_BATCH_SIZE: ${KAFKA_PRODUCER_BATCH_SIZE}
+      KAFKA_PRODUCER_BATCH_TIMEOUT: ${KAFKA_PRODUCER_BATCH_TIMEOUT}
+    depends_on:
+      - app-init
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.svc
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  wrk-1:
+    image: geotracking/app:1
+    command: ["wrk"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: wrk
+      pod.name: app.wrk-1
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${WRK_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_WRITE_TIMEOUT: ${MONGO_WRITE_TIMEOUT}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      LOCATION_TTL: ${LOCATION_TTL}
+      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+    depends_on:
+      - app-init
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.wrk
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  wrk-2:
+    image: geotracking/app:1
+    command: ["wrk"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: wrk
+      pod.name: app.wrk-2
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${WRK_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_WRITE_TIMEOUT: ${MONGO_WRITE_TIMEOUT}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      LOCATION_TTL: ${LOCATION_TTL}
+      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+    depends_on:
+      - app-init
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.wrk
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  wrk-3:
+    image: geotracking/app:1
+    command: ["wrk"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: wrk
+      pod.name: app.wrk-3
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${WRK_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_WRITE_TIMEOUT: ${MONGO_WRITE_TIMEOUT}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      LOCATION_TTL: ${LOCATION_TTL}
+      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+    depends_on:
+      - app-init
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.wrk
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  wrk-4:
+    image: geotracking/app:1
+    command: ["wrk"]
+    restart: on-failure
+    labels:
+      app.name: app
+      app.type: wrk
+      pod.name: app.wrk-4
+      log.format: json
+      log.timestmap.field: date
+    environment:
+      LOG_LEVEL: ${WRK_LOG_LEVEL}
+      MONGO_ADDRESS: ${MONGO_ADDRESS}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_WRITE_TIMEOUT: ${MONGO_WRITE_TIMEOUT}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+      KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
+      LOCATION_TTL: ${LOCATION_TTL}
+      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+    depends_on:
+      - app-init
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.wrk
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+
+  dp:
+    image: dp:1
+    build: dp
+    restart: on-failure
+    command: sync
+    labels:
+      app.name: app
+      app.type: dp
+      pod.name: app.dp
+      log.format: json
+      log.timestmap.field: timestamp
+    environment:
+      CLICKHOUSE_DSN: clickhouse://default:${CLICKHOUSE_ADMIN_PASSWORD}@ch:9001
+    volumes:
+      - ./dp:/app
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: app.dp
+        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"

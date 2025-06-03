@@ -1,0 +1,80 @@
+services:
+  p-1:
+    image: redpandadata/redpanda:v24.1.21
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=2G
+      - --reserve-memory=0M
+      - --node-id=1
+      - --check=false
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr=internal://p-1:9092,external://localhost:19092
+      - --schema-registry-addr=internal://0.0.0.0:8081,external://0.0.0.0:18081
+      - --pandaproxy-addr=internal://0.0.0.0:8082,external://0.0.0.0:18082
+      - --advertise-pandaproxy-addr=internal://p-1:8082,external://localhost:18082
+      - --rpc-addr=p-1:33145
+      - --advertise-rpc-addr=p-1:33145
+    volumes:
+      - p-1:/var/lib/redpanda/data
+
+  p-2:
+    image: redpandadata/redpanda:v24.1.21
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=2G
+      - --reserve-memory=0M
+      - --node-id=2
+      - --check=false
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:29092
+      - --advertise-kafka-addr=internal://p-2:9092,external://localhost:29092
+      - --schema-registry-addr=internal://0.0.0.0:8081,external://0.0.0.0:28081
+      - --pandaproxy-addr=internal://0.0.0.0:8082,external://0.0.0.0:28082
+      - --advertise-pandaproxy-addr=internal://p-2:8082,external://localhost:28082
+      - --rpc-addr=p-2:33145
+      - --advertise-rpc-addr=p-2:33145
+      - --seeds=p-1:33145
+    volumes:
+      - p-2:/var/lib/redpanda/data
+    depends_on: [ p-1 ]
+
+  p-3:
+    image: redpandadata/redpanda:v24.1.21
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=2G
+      - --reserve-memory=0M
+      - --node-id=3
+      - --check=false
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:39092
+      - --advertise-kafka-addr=internal://p-3:9092,external://localhost:39092
+      - --schema-registry-addr=internal://0.0.0.0:8081,external://0.0.0.0:38081
+      - --pandaproxy-addr=internal://0.0.0.0:8082,external://0.0.0.0:38082
+      - --advertise-pandaproxy-addr=internal://p-3:8082,external://localhost:38082
+      - --rpc-addr=p-3:33145
+      - --advertise-rpc-addr=p-3:33145
+      - --seeds=p-1:33145
+    volumes:
+      - p-3:/var/lib/redpanda/data
+    depends_on: [ p-1 ]
+
+  p-ui:
+    image: docker.redpanda.com/redpandadata/console:latest
+    ports:
+      - 9080:8080
+    environment:
+      CONFIG_FILEPATH: /etc/redpanda/redpanda-console-config.yaml
+    volumes:
+      - ./redpanda-console-config.yaml:/etc/redpanda/redpanda-console-config.yaml
+    depends_on: [ p-1, p-2, p-3 ]
+
+volumes:
+  redpanda:

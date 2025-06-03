@@ -1,0 +1,18 @@
+services:
+  proxy:
+    image: envoyproxy/envoy:v1.29.1
+    ports:
+      - 8000:8000
+      - 9000:9000
+      - 9001:9001
+      - 8123:8123
+      - 9901:9901
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    networks:
+      default:
+        aliases:
+          - s3
+          - ch
+          - app
+          - p-s

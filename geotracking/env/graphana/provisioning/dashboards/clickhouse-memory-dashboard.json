@@ -1,0 +1,1469 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "ClickHouse Memory Analysis using Prometheus",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 11,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 42,
+      "panels": [],
+      "title": "Overall",
+      "type": "row"
+    },
+    {
+      "datasource": "prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "alertThreshold": false,
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": "prometheus",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemory.*\",instance=~\"$ch_node.*\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{__name__}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "OS Memory ($ch_node)",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "ClickHouseAsyncMetrics_OSMemory",
+            "renamePattern": " "
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 26,
+      "options": {
+        "alertThreshold": false,
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": "prometheus",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*Memory.*\",__name__ !~ \"ClickHouseAsyncMetrics_.*OSMemory.*\",instance=~\"$ch_node.*\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{__name__}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "ClickHouse Memory ($ch_node)",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "ClickHouseAsyncMetrics_Memory",
+            "renamePattern": " "
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": "prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 15000000000
+              },
+              {
+                "color": "red",
+                "value": 20000000000
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 25,
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": "prometheus",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "({__name__=~ \"ClickHouseAsyncMetrics_jemalloc.*\", __name__!=\"ClickHouseAsyncMetrics_jemalloc_metadata_thp\", __name__!~ \"ClickHouseAsyncMetrics_jemalloc_background_thread.*\", instance=~\"$ch_node.*\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{__name__}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "jemalloc All  ($ch_node)",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "ClickHouseAsyncMetrics_jemalloc_",
+            "renamePattern": " "
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "_",
+            "renamePattern": " "
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "_",
+            "renamePattern": " "
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "_",
+            "renamePattern": " "
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 22,
+      "panels": [
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 36,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemoryTotal\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Total",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 10
+          },
+          "id": 29,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemoryAvailable\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Available",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 17
+          },
+          "id": 30,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemoryFreeWithoutCached\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Free Without Cached",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 24
+          },
+          "id": 31,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*Buffers\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Cached",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 31
+          },
+          "id": 32,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemoryBuffers\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Buffers",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 38
+          },
+          "id": 33,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemorySwapCached\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Swap Cached",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 45
+          },
+          "id": 28,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*OSMemoryFreePlusCached\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "OS Memory: Free Plus Cached",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "OS Memory",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 35,
+      "panels": [
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 2
+          },
+          "id": 38,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*MemoryResident\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CH Memory: Resident",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 9
+          },
+          "id": 27,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*MemoryShared\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CH Memory: Shared",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 16
+          },
+          "id": 37,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*MemoryCode\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CH Memory: Code",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 23
+          },
+          "id": 39,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*MemoryDataAndStack\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CH Memory: Data And Stack",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 30
+          },
+          "id": 40,
+          "options": {
+            "alertThreshold": false
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "({__name__ =~ \"ClickHouseAsyncMetrics_.*Virtual\"})",
+              "format": "time_series",
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "CH Memory: Virtual",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": ":.*",
+                "renamePattern": " "
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "Clickhouse Memory",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 19,
+      "panels": [
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "id": 20,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)(ClickHouseAsyncMetrics_jemalloc_active{})",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc active",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 13
+          },
+          "id": 6,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_allocated))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc allocated",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "id": 10,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_mapped))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc mapped",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 31
+          },
+          "id": 11,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_metadata))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc metadata",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 40
+          },
+          "id": 12,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_resident))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc resident",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 49
+          },
+          "id": 13,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_retained))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc retained",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 58
+          },
+          "id": 14,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_epoch))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc epoch",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 67
+          },
+          "id": 15,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_arenas_all_pdirty))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc areas all pdirty",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 76
+          },
+          "id": 16,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_arenas_all_pmuzzy))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc areas all pmuzzy",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 85
+          },
+          "id": 17,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_arenas_all_pactive))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc areas all pactive",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 94
+          },
+          "id": 7,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_arenas_all_dirty_purged))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc arenas all dirty purged",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 103
+          },
+          "id": 8,
+          "options": {
+            "alertThreshold": true
+          },
+          "pluginVersion": "8.5.2",
+          "targets": [
+            {
+              "datasource": "prometheus",
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum without(job)((ClickHouseAsyncMetrics_jemalloc_arenas_all_muzzy_purged))",
+              "format": "time_series",
+              "instant": false,
+              "legendFormat": "{{instance}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "jemalloc arenas all muzzy purged",
+          "type": "timeseries"
+        }
+      ],
+      "title": "jemalloc",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 40,
+  "tags": [
+    "clickhouse",
+    "db"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "ch-1",
+          "value": "ch-1"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "ClickHouseAsyncMetrics_Uptime",
+        "includeAll": false,
+        "label": "Overall Node:",
+        "name": "ch_node",
+        "options": [],
+        "query": {
+          "query": "ClickHouseAsyncMetrics_Uptime",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/instance=\"(?<text>[^:]+)|instance=\"(?<value>[^:]+)/g",
+        "sort": 5,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Clickhouse Memory Analysis",
+  "uid": "123456",
+  "version": 2,
+  "weekStart": ""
+}

@@ -1,0 +1,153 @@
+<clickhouse>
+  <logger>
+    <level>trace</level>
+    <console>1</console>
+    <log remove="remove"/>
+    <errorlog remove="remove"/>
+  </logger>
+
+  <query_log>
+    <database>system</database>
+    <table>query_log</table>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <!-- Turn off masking so INSERT bodies are logged in full -->
+    <mask_insert_query>0</mask_insert_query>
+    <enabled>1</enabled>
+  </query_log>
+
+  <remote_servers>
+    <cluster>
+      <secret from_env="CLICKHOUSE_CLUSTER_SECRET"/>
+      <shard>
+        <replica>
+          <host>ch-1</host>
+          <port>9000</port>
+        </replica>
+        <replica>
+          <host>ch-2</host>
+          <port>9000</port>
+        </replica>
+        <replica>
+          <host>ch-3</host>
+          <port>9000</port>
+        </replica>
+      </shard>
+    </cluster>
+  </remote_servers>
+
+  <macros>
+    <cluster>cluster</cluster>
+    <shard>1</shard>
+    <replica from_env="REPLICA" />
+  </macros>
+
+  <interserver_http_port>9009</interserver_http_port>
+
+  <zookeeper>
+    <node index="1">
+      <host>chk-1</host>
+      <port>9181</port>
+    </node>
+    <node index="2">
+      <host>chk-2</host>
+      <port>9181</port>
+    </node>
+    <node index="3">
+      <host>chk-3</host>
+      <port>9181</port>
+    </node>
+  </zookeeper>
+
+  <path>/var/lib/clickhouse/</path>
+  <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
+  <user_files_path>/topics</user_files_path>
+  <format_schema_path>/var/lib/clickhouse/format_schemas/</format_schema_path>
+  
+  <user_directories>
+    <users_xml>
+      <path>users.xml</path>
+    </users_xml>
+  </user_directories>
+
+  <tcp_port>9000</tcp_port>
+  <http_port>8123</http_port>
+
+  <distributed_ddl>
+    <path>/clickhouse/task_queue/ddl</path>
+  </distributed_ddl>
+
+  <s3>
+    <use_environment_credentials>true</use_environment_credentials>
+  </s3>
+
+  <named_collections>
+    <s3_taxi>
+      <access_key_id from_env="AWS_ACCESS_KEY_ID" />
+      <secret_access_key from_env="AWS_SECRET_ACCESS_KEY" />
+      <format>PARQUET</format>
+        <url>http://s3:9000/data/taxi/year=*/month=*/*.parquet</url>
+    </s3_taxi>
+    <s3_track_locations>
+      <access_key_id from_env="AWS_ACCESS_KEY_ID" />
+      <secret_access_key from_env="AWS_SECRET_ACCESS_KEY" />
+      <format>PARQUET</format>
+        <url>http://s3:9000/data/topics/app.app.track_locations/year=*/month=*/day=*/hour=*/*.parquet</url>
+    </s3_track_locations>
+    <s3_track_routes>
+      <access_key_id from_env="AWS_ACCESS_KEY_ID" />
+      <secret_access_key from_env="AWS_SECRET_ACCESS_KEY" />
+      <format>PARQUET</format>
+        <url>http://s3:9000/data/topics/app.app.track_routes/year=*/month=*/day=*/hour=*/*.parquet</url>
+    </s3_track_routes>
+  </named_collections>
+
+  <storage_configuration>
+    <disks>
+      <s3_main>
+        <type>s3</type>
+        <endpoint>http://s3:9000/data/clickhouse/</endpoint>
+        <metadata_path>/var/lib/clickhouse/disks/s3/</metadata_path>
+        <!-- <send_metadata>true</send_metadata> -->
+      </s3_main>
+      <s3_cache>
+        <type>cache</type>
+        <disk>s3_main</disk>
+        <path>/var/lib/clickhouse/disks/s3_cache/</path>
+        <max_size>10Gi</max_size>
+        <cache_on_write_operations>1</cache_on_write_operations>
+      </s3_cache>
+    </disks>
+    <policies>
+      <s3_cache>
+        <volumes>
+          <main>
+            <disk>s3_cache</disk>
+          </main>
+        </volumes>
+      </s3_cache>
+      <s3_main>
+        <volumes>
+          <main>
+            <disk>s3_main</disk>
+          </main>
+        </volumes>
+      </s3_main>
+    </policies>
+  </storage_configuration>
+
+  <prometheus>
+     <endpoint>/metrics</endpoint>
+     <port>9126</port>
+     <metrics>true</metrics>
+     <events>true</events>
+     <asynchronous_metrics>true</asynchronous_metrics>
+  </prometheus>
+
+  <filesystem_caches>
+    <cache_for_s3>
+      <path>/var/lib/clickhouse/s3_cache/</path>
+      <max_size>10Gi</max_size>
+    </cache_for_s3>
+  </filesystem_caches>
+
+</clickhouse>

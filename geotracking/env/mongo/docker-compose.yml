@@ -1,0 +1,60 @@
+services:
+  m-1:
+    image: mongo:7.0.20-jammy
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    command:
+      - --replSet=rs0
+      - --bind_ip_all
+      - --config=/etc/mongo/mongod.conf
+      - --auth
+      - --keyFile=/etc/mongo/mongo.key
+    volumes:
+      - m-1:/data/db
+      - ./mongo.key:/etc/mongo/mongo.key
+      - ./mongo-1.conf:/etc/mongo/mongod.conf
+  m-2:
+    image: mongo:7.0.20-jammy
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    command:
+      - --replSet=rs0
+      - --bind_ip_all
+      - --config=/etc/mongo/mongod.conf
+      - --auth
+      - --keyFile=/etc/mongo/mongo.key
+    volumes:
+      - m-2:/data/db
+      - ./mongo.key:/etc/mongo/mongo.key
+      - ./mongo-1.conf:/etc/mongo/mongod.conf
+  m-3:
+    image: mongo:7.0.20-jammy
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    command:
+      - --replSet=rs0
+      - --bind_ip_all
+      - --config=/etc/mongo/mongod.conf
+      - --auth
+      - --keyFile=/etc/mongo/mongo.key
+    volumes:
+      - m-3:/data/db
+      - ./mongo.key:/etc/mongo/mongo.key
+      - ./mongo-1.conf:/etc/mongo/mongod.conf
+  e-m:
+    image: percona/mongodb_exporter:0.44.0
+    restart: on-failure
+    ports:
+      - 9216:9216
+    environment:
+      MONGODB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@m-1:27017/admin,mongodb://${MONGO_USER}:${MONGO_PASSWORD}@m-2:27017/admin,mongodb://${MONGO_USER}:${MONGO_PASSWORD}@m-3:27017/admin
+    command:
+      - '--collect-all'
+      - '--compatible-mode'
+    depends_on: [ m-1, m-2, m-3 ]

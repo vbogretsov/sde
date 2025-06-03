@@ -1,0 +1,43 @@
+services:
+  v-1:
+    image: victoriametrics/victoria-metrics:v1.110.0
+    ports:
+      - 8428:8428
+    volumes:
+      - v-1:/vmdata
+    command:
+      - '--storageDataPath=/vmdata'
+      - '--retentionPeriod=5d'
+
+  v-a:
+    image: victoriametrics/vmagent:v1.110.0
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--promscrape.config=/etc/prometheus/prometheus.yml'
+      - '--remoteWrite.url=http://v-1:8428/api/v1/write'
+      - '-maxLabelsPerTimeseries=100'
+
+  e-node:
+    image: prom/node-exporter
+    pid: host
+    uts: host
+    cgroup: host
+    userns_mode: host
+    ipc: host
+    restart: on-failure
+    ports:
+      - 9100:9100
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - /:/host:ro
+
+  e-docker:
+    image: gcr.io/cadvisor/cadvisor:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro

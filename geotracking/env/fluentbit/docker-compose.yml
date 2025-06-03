@@ -1,0 +1,14 @@
+services:
+  flb:
+    image: fluent/fluent-bit:2.2
+    restart: on-failure
+    ports:
+      - 24224:24224
+      - 24224:24224/udp
+    environment:
+      CLICKHOUSE_USER: ${CLICKHOUSE_DEFAULT_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_DEFAULT_PASSWORD}
+    volumes:
+      - ./etc:/fluent-bit/etc
+      - ./scripts:/fluent-bit/scripts
+      - flb:/var/log/flb

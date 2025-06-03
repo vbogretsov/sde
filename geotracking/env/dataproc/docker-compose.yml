@@ -1,0 +1,25 @@
+services:
+  merge:
+    image: duckdb/duckdb:latest
+    entrypoint: >
+      /bin/sh -c "
+      echo '
+      SET s3_region = ''us-east-1'';
+      SET s3_access_key_id = ''${AWS_ACCESS_KEY}'';
+      SET s3_secret_access_key = ''${AWS_SECRET_KEY}'';
+      SET s3_endpoint = ''http://s3-1:9000'';
+      SET s3_url_style = ''path'';
+
+      COPY (
+        SELECT * FROM ''s3://${BUCKET}/${S3_PATH}''
+      )
+      TO ''s3://${S3_BUCKET}/output/merged.parquet'' (FORMAT PARQUET);
+      ' > /tmp/merge.sql &&
+      duckdb < /tmp/merge.sql
+      "
+    environment:
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      S3_BUCKET: ${MINIO_BUCKET}
+      S3_INPUT: 'topics/app.app.track_locations/year=2025/month=05/day=19/*.parquet'
+      S3_OUTPUT: 'topics/app.app.track_locations/year=2025/month=05/day=19/*.parquet'

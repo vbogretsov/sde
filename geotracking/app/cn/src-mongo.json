@@ -1,0 +1,21 @@
+{
+  "name": "app-src-mongo",
+  "config": {
+    "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+    "tasks.max": "2",
+    "topic.prefix": "app",
+    "topic.creation.default.partitions": 1,
+    "topic.creation.default.replication.factor": 3,
+    "mongodb.connection.string": "mongodb://m-1:27017,m-2:27017,m-3:27017/?replicaSet=rs0",
+    "mongodb.name": "app",
+    "mongodb.user": "app",
+    "mongodb.password": "app",
+    "database.include.list": "app",
+    "collection.include.list": "app.track_routes,app.track_locations",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.add.fields": "op,ts_ms",
+    "transforms.unwrap.delete.handling.mode": "drop"
+  }
+}

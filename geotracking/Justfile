@@ -1,0 +1,79 @@
+set dotenv-path := ".env"
+
+export CONNECT_ADDR := "http://localhost:8083"
+export CHPORT := "9001"
+
+bootstrap:
+    @openssl rand -base64 756 > ./env/mongo/mongo.key
+    @chmod 400 ./env/mongo/mongo.key
+
+m-sh:
+    @docker compose exec m-1 mongosh \
+        -u $MONGO_USER \
+        -p $MONGO_PASSWORD \
+        --authenticationDatabase admin $MONGO_DATABASE
+
+# writeConcernMajorityJournalDefault: true
+m-rs:
+    @docker compose exec m-1 mongosh \
+        -u $MONGO_USER \
+        -p $MONGO_PASSWORD \
+        --authenticationDatabase admin $MONGO_DATABASE \
+        --eval 'rs.initiate({ \
+            _id: "rs0", \
+            members: [ \
+                { _id: 0, host: "m-1:27017" }, \
+                { _id: 1, host: "m-2:27017" }, \
+                { _id: 2, host: "m-3:27017" }, \
+            ]\
+        })'
+
+cn-init:
+    @curl -X POST -H 'Content-Type: application/json' $CONNECT_ADDR/connectors \
+        -d @app/cn/src-mongo.json
+    @curl -X POST -H 'Content-Type: application/json' $CONNECT_ADDR/connectors \
+        -d @app/cn/dst-s3-1.json
+    @curl -X POST -H 'Content-Type: application/json' $CONNECT_ADDR/connectors \
+        -d @app/cn/dst-s3-2.json
+
+ch-init:
+    @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_ADMIN_PASSWORD} \
+        -q 'CREATE DATABASE IF NOT EXISTS app ON CLUSTER cluster'
+    @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_ADMIN_PASSWORD} \
+        -q 'CREATE DATABASE IF NOT EXISTS mon ON CLUSTER cluster'
+    @docker compose --profile app run --rm dp init
+
+cn-s3-debug:
+    curl -X PUT $CONNECT_ADDR/admin/loggers/io.confluent.connect.s3 \
+        -H "Content-Type: application/json" \
+        -d '{"level": "DEBUG"}'
+
+ch-sh DB:
+    @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_DEFAULT_PASSWORD} \
+        -d {{DB}}
+
+log CONTAINER:
+    @docker compose logs --no-log-prefix --tail 100 -f {{CONTAINER}}
+
+down:
+    @docker compose stop app-1
+    @docker compose stop app-2
+    @docker compose stop wrk-1
+    @docker compose stop wrk-2
+    @docker compose stop wrk-3
+    @docker compose stop wrk-4
+    @docker compose stop dp
+    @docker compose down
+    # @docker compose down -v
+
+prev-upload:
+    @docker compose run aws aws --endpoint-url http://s3:9000 s3 cp --recursive /data/prev/app.app.track_locations s3://data/topics/app.app.track_locations
+
+prev-download:
+    @docker compose run aws aws --endpoint-url http://s3:9000 s3 cp --recursive s3://data/topics/app.app.track_locations /data/prev/app.app.track_locations
+
+clean:
+    @rm -rf data/sink/*
+    @rm -rf data/s3/1/*
+    @rm -rf data/s3/2/*
+    @rm -rf data/s3/3/*

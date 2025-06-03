@@ -1,0 +1,1 @@
+DYLD_LIBRARY_PATH=/opt/pkg/lib:/opt/pkg/libexec/onetbb/lib:$DYLD_LIBRARY_PATH

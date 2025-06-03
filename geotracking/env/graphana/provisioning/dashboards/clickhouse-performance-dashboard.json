@@ -1,0 +1,3380 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "ClickHouse Performance Monitor",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": 12,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 26,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/^uptime()$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateTimeType": "DATETIME",
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT uptime()\n",
+          "rawQuery": "SELECT uptime()",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true
+        }
+      ],
+      "title": "CK UP Time",
+      "type": "stat"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 8,
+        "w": 17,
+        "x": 7,
+        "y": 0
+      },
+      "id": 55,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "Partition Name",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "partition",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Data Part Name",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "name",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Rows",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "rows",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Database Name",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "database",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Table Name",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "table",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Part Type",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "part_type",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Bytes On Disk",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "bytes_on_disk",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "Data Compressed Bytes",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "data_compressed_bytes",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "delete_ttl_info_max",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    database,\n    table,\n    partition,\n    name,\n    part_type,\n    rows,\n    bytes_on_disk,\n    data_compressed_bytes\nFROM $table\n\nWHERE database!='system'\n",
+          "rawQuery": "SELECT\n    database,\n    table,\n    partition,\n    name,\n    part_type,\n    rows,\n    bytes_on_disk,\n    data_compressed_bytes\nFROM system.parts\n\nWHERE database!='system'",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "parts",
+          "tableLoading": false
+        }
+      ],
+      "title": "Part Info Base",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 0,
+        "y": 2
+      },
+      "id": 30,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Free",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Total",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Used",
+          "thresholds": [
+            "70",
+            "90"
+          ],
+          "type": "number",
+          "unit": "percentunit"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    name as Name,\n    path as Path,\n    free_space as Free,\n    total_space as Total,\n    1 - free_space/total_space as Used\nFROM $table",
+          "rawQuery": "SELECT\n    name as Name,\n    path as Path,\n    free_space as Free,\n    total_space as Total,\n    1 - free_space/total_space as Used\nFROM system.disks",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "disks",
+          "tableLoading": false
+        }
+      ],
+      "title": "Disk Space Used Basic",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 3,
+        "w": 7,
+        "x": 0,
+        "y": 5
+      },
+      "id": 57,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    value as ReplicasMaxAbsoluteDelay\nFROM $table\n\nWHERE metric='ReplicasMaxAbsoluteDelay'\n\n",
+          "rawQuery": "SELECT\n    value as ReplicasMaxAbsoluteDelay\nFROM system.asynchronous_metrics\n\nWHERE metric='ReplicasMaxAbsoluteDelay'",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "asynchronous_metrics",
+          "tableLoading": false
+        },
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    value as ReplicasMaxRelativeDelay\nFROM $table\n\nWHERE metric='ReplicasMaxRelativeDelay'\n",
+          "rawQuery": "SELECT\n    value as ReplicasMaxRelativeDelay\nFROM system.asynchronous_metrics\n\nWHERE metric='ReplicasMaxRelativeDelay'",
+          "refId": "B",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "asynchronous_metrics",
+          "tableLoading": false
+        },
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    value as ReplicasMaxQueueSize\nFROM $table\n\nWHERE metric='ReplicasMaxQueueSize'\n",
+          "rawQuery": "SELECT\n    value as ReplicasMaxQueueSize\nFROM system.asynchronous_metrics\n\nWHERE metric='ReplicasMaxQueueSize'",
+          "refId": "C",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "asynchronous_metrics",
+          "tableLoading": false
+        }
+      ],
+      "title": "Replica Info Base",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "description": "表的列数",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 11,
+        "x": 0,
+        "y": 8
+      },
+      "id": 28,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "ColumnCnt",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "TotalRows",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "TotalBytes",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "metadata_modification_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    database as DatabaseName,\n    name as TableName,\n    total_rows as TotalRows,\n    total_bytes as TotalBytes\nFROM $table\n\nWHERE database !='system'\n",
+          "rawQuery": "SELECT\n    database as DatabaseName,\n    name as TableName,\n    total_rows as TotalRows,\n    total_bytes as TotalBytes\nFROM system.tables\n\nWHERE database !='system'",
+          "refId": "B",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "tables",
+          "tableLoading": false
+        },
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    database as DatabaseName,\n    table as TableName,\n    count(1) as ColumnCnt\nFROM $table\nWHERE database!='system'\nGROUP BY DatabaseName, TableName",
+          "rawQuery": "SELECT\n    database as DatabaseName,\n    table as TableName,\n    count(1) as ColumnCnt\nFROM system.columns\nWHERE database!='system'\nGROUP BY DatabaseName, TableName",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "columns",
+          "tableLoading": false
+        }
+      ],
+      "title": "Table Info Basic",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 11,
+        "y": 8
+      },
+      "id": 53,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "Bytes Of Allocated",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "bytes_allocated",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "Query Cnt",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "query_count",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Element Cnt",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "element_count",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Hit Rate",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "hit_rate",
+          "thresholds": [],
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "alias": "Load Factor",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "load_factor",
+          "thresholds": [],
+          "type": "number",
+          "unit": "percent"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "last_successful_update_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    database DatabaseName,\n    name DictionnaryName,\n    status Status,\n    type Type,\n    bytes_allocated,\n    query_count,\n    element_count,\n    hit_rate,\n    load_factor\nFROM $table\n\nWHERE $timeFilter\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 4) * 4) * 1000 as t,\n    CurrentMetric_MemoryTracking\nFROM system.metric_log\nWHERE event_date >= toDate(1609221187) AND event_time >= toDateTime(1609221187)\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "dictionaries",
+          "tableLoading": false
+        }
+      ],
+      "title": "Dictionaries Info Base",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 22,
+      "panels": [],
+      "title": "Top charts",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 20,
+        "x": 0,
+        "y": 19
+      },
+      "id": 15,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "expr": "",
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "<font color=\"darkcyan\">$rateColumns</font>(<br />    <font color=\"navajowhite\">substring</font>(query,  <font color=\"cornflowerblue\">1</font>,  <font color=\"cornflowerblue\">45</font>) <font color=\"darkorange\">AS</font> query,<br />    <font color=\"navajowhite\">count</font>() c)<br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font><br />    <font color=\"navajowhite\">cityHash64</font>(query) <font color=\"darkorange\">global</font> <font color=\"darkorange\">in</font> (<br />    <font color=\"darkorange\">SELECT</font> <font color=\"navajowhite\">cityHash64</font>(<font color=\"navajowhite\">substring</font>(query,  <font color=\"cornflowerblue\">1</font>,  <font color=\"cornflowerblue\">45</font>)) <font color=\"darkorange\">AS</font> h<br />    <font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br />    <font color=\"darkorange\">WHERE</font><br />        <font color=\"darkcyan\">$timeFilter</font><br />        <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$type</font>)<br />        <font color=\"yellow\">AND</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />        <font color=\"yellow\">AND</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))<br />    <font color=\"darkorange\">GROUP BY</font> h<br />    <font color=\"darkorange\">ORDER BY</font> <font color=\"navajowhite\">count</font>() <font color=\"darkorange\">desc</font><br />    <font color=\"darkorange\">LIMIT</font> <font color=\"darkcyan\">$top</font>)<br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$type</font>)<br />    <font color=\"yellow\">AND</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />    <font color=\"yellow\">AND</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))",
+          "intervalFactor": 2,
+          "query": "$rateColumns(\n    substring(query,  1,  45) AS query,\n    count() c)\nFROM $table\nWHERE\n    cityHash64(query) global in (\n    SELECT cityHash64(substring(query,  1,  45)) AS h\n    FROM $table\n    WHERE\n        $timeFilter\n        AND type in ($type)\n        AND initial_user in ($user)\n        AND('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))\n    GROUP BY h\n    ORDER BY count() desc\n    LIMIT $top)\n    AND type in ($type)\n    AND initial_user in ($user)\n    AND('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))",
+          "rawQuery": "SELECT t, arrayMap(a -> (a.1, a.2/runningDifference( t/1000 )), groupArr) FROM (SELECT t, groupArray((query, c)) AS groupArr FROM ( SELECT (intDiv(toUInt32(event_time), 2) * 2) * 1000 AS t, substring(query, 1, 45) AS query, count() c FROM system.query_log\nWHERE event_date >= toDate(1603862271) AND event_time >= toDateTime(1603862271) AND\n    cityHash64(query) global in (\n    SELECT cityHash64(substring(query,  1,  45)) AS h\n    FROM system.query_log\n    WHERE\n        event_date >= toDate(1603862271) AND event_time >= toDateTime(1603862271)\n        AND type in (1,2,3,4)\n        AND initial_user in ('default')\n        AND('all' = 'all' or(positionCaseInsensitive(query,  'all') = 1))\n    GROUP BY h\n    ORDER BY count() desc\n    LIMIT 30)\n    AND type in (1,2,3,4)\n    AND initial_user in ('default')\n    AND('all' = 'all' or(positionCaseInsensitive(query,  'all') = 1)) GROUP BY t, query ORDER BY t, query) GROUP BY t ORDER BY t)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Top $top request's rate by type: $type; user: $user; query type: $query_type",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 20,
+        "y": 19
+      },
+      "id": 17,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "1 - successful start of query execution\n\n2 - successful end of query execution\n\n3 - exception before start of query execution\n\n4 - exception while query execution",
+        "mode": "markdown"
+      },
+      "pluginVersion": "11.5.2",
+      "title": "Types",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 26
+      },
+      "height": "400px",
+      "id": 18,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 2,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "duration",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "duration",
+          "thresholds": [],
+          "type": "number",
+          "unit": "ms"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "count",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "datetimeLoading": false,
+          "expr": "",
+          "format": "table",
+          "formattedQuery": "<font color=\"darkorange\">SELECT</font><br />    <font color=\"navajowhite\">rand</font>() <font color=\"darkorange\">as</font> t,<br />    <font color=\"navajowhite\">substring</font>(query,  <font color=\"cornflowerblue\">1</font>,  <font color=\"cornflowerblue\">70</font>) <font color=\"darkorange\">AS</font> query,<br />    <font color=\"navajowhite\">avg</font>(query_duration_ms) duration,<br />    <font color=\"navajowhite\">count</font>() <font color=\"navajowhite\">count</font><br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font><br />    <font color=\"darkcyan\">$timeFilter</font><br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$type</font>)<br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />    <font color=\"yellow\">and</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))<br /><font color=\"darkorange\">GROUP BY</font> query<br /><font color=\"darkorange\">ORDER BY</font> duration <font color=\"darkorange\">desc</font><br /><font color=\"darkorange\">LIMIT</font> <font color=\"darkcyan\">$top</font>",
+          "intervalFactor": 2,
+          "query": "SELECT\n    rand() as t,\n    substring(query,  1,  70) AS query,\n    avg(query_duration_ms) duration,\n    count() count\nFROM $table\nWHERE\n    $timeFilter\n    AND type in ($type)\n    and initial_user in ($user)\n    and('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))\nGROUP BY query\nORDER BY duration desc\nLIMIT $top",
+          "rawQuery": "SELECT     rand() as t,     substring(query,  1,  70) AS query,     avg(query_duration_ms) duration,     count() count FROM system.query_log WHERE     event_date >= toDate(1498209947) AND event_time >= toDateTime(1498209947)     AND type in (1,2,3,4)     and initial_user in ('default')     and('all' = 'all' or(positionCaseInsensitive(query,  'all') = 1)) GROUP BY query ORDER BY duration desc LIMIT 5",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Top slow queries by type: $type; user: $user; query type: $query_type",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 8,
+        "y": 26
+      },
+      "height": "400px",
+      "id": 19,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 2,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "usage",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "usage",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "count",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "datetimeLoading": false,
+          "expr": "",
+          "format": "table",
+          "formattedQuery": "<font color=\"darkorange\">SELECT</font><br />    <font color=\"navajowhite\">rand</font>() <font color=\"darkorange\">as</font> t,<br />    <font color=\"navajowhite\">substring</font>(query,  <font color=\"cornflowerblue\">1</font>,  <font color=\"cornflowerblue\">70</font>) <font color=\"darkorange\">AS</font> query,<br />    <font color=\"navajowhite\">avg</font>(memory_usage) usage,<br />    <font color=\"navajowhite\">count</font>() <font color=\"navajowhite\">count</font><br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font><br />    <font color=\"darkcyan\">$timeFilter</font><br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$type</font>)<br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />    <font color=\"yellow\">and</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))<br /><font color=\"darkorange\">GROUP BY</font> query<br /><font color=\"darkorange\">ORDER BY</font> usage <font color=\"darkorange\">desc</font><br /><font color=\"darkorange\">LIMIT</font> <font color=\"darkcyan\">$top</font>",
+          "intervalFactor": 2,
+          "query": "SELECT\n    rand() as t,\n    substring(query,  1,  70) AS query,\n    avg(memory_usage) usage,\n    count() count\nFROM $table\nWHERE\n    $timeFilter\n    AND type in ($type)\n    and initial_user in ($user)\n    and('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))\nGROUP BY query\nORDER BY usage desc\nLIMIT $top",
+          "rawQuery": "SELECT     rand() as t,     substring(query,  1,  70) AS query,     avg(memory_usage) usage,     count() count FROM system.query_log WHERE     event_date >= toDate(1498209947) AND event_time >= toDateTime(1498209947)     AND type in (1,2,3,4)     and initial_user in ('default')     and('all' = 'all' or(positionCaseInsensitive(query,  'all') = 1)) GROUP BY query ORDER BY usage desc LIMIT 5",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Top memory consumers by type: $type; user: $user; query type: $query_type",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 26
+      },
+      "height": "400px",
+      "id": 20,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "type",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "type",
+          "thresholds": [],
+          "type": "number",
+          "unit": "none"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "count",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "datetimeLoading": false,
+          "expr": "",
+          "format": "table",
+          "formattedQuery": "<font color=\"darkorange\">SELECT</font><br />    <font color=\"navajowhite\">rand</font>() <font color=\"darkorange\">as</font> t,<br />    <font color=\"navajowhite\">substring</font>(query,  <font color=\"cornflowerblue\">1</font>,  <font color=\"cornflowerblue\">70</font>) <font color=\"darkorange\">AS</font> query,<br />    <font color=\"darkorange\">type</font>,<br />    <font color=\"navajowhite\">count</font>() <font color=\"navajowhite\">count</font><br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font><br />    <font color=\"darkcyan\">$timeFilter</font><br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"cornflowerblue\">3</font>,<font color=\"cornflowerblue\">4</font>)<br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />    <font color=\"yellow\">and</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))<br /><font color=\"darkorange\">GROUP BY</font><br />    query,<br />    <font color=\"darkorange\">type</font><br /><font color=\"darkorange\">ORDER BY</font> <font color=\"navajowhite\">count</font> <font color=\"darkorange\">desc</font><br /><font color=\"darkorange\">LIMIT</font> <font color=\"darkcyan\">$top</font>",
+          "intervalFactor": 2,
+          "query": "SELECT\n    rand() as t,\n    substring(query,  1,  70) AS query,\n    type,\n    count() count\nFROM $table\nWHERE\n    $timeFilter\n    AND type in (3,4)\n    and initial_user in ($user)\n    and('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))\nGROUP BY\n    query,\n    type\nORDER BY count desc\nLIMIT $top",
+          "rawQuery": "SELECT     rand() as t,     substring(query,  1,  70) AS query,     type,     count() count FROM system.query_log WHERE     event_date >= toDate(1498209947) AND event_time >= toDateTime(1498209947)     AND type in (3,4)     and initial_user in ('default')     and('all' = 'all' or(positionCaseInsensitive(query,  'all') = 1)) GROUP BY     query,     type ORDER BY count desc LIMIT 5",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Top failed queries by user: $user; query type: $query_type",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 23,
+      "panels": [],
+      "title": "Request charts",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 37
+      },
+      "id": 14,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "expr": "",
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "<font color=\"darkcyan\">$rate</font>(<font color=\"navajowhite\">count</font>() c)<br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">where</font>  <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$type</font>)<br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />    <font color=\"yellow\">and</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))",
+          "intervalFactor": 2,
+          "query": "$rate(count() c)\nFROM $table\nwhere  type in ($type)\n    and initial_user in ($user)\n    and('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_MergedRows) as ProfileEvent_MergedRows\nFROM system.metric_log\n\nWHERE event_time >= toDateTime(1609221193)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Reqs/s by type: $type; user: $user; query type: $query_type",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "insert_duration"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 37
+      },
+      "id": 16,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "expr": "",
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "<font color=\"darkorange\">SELECT</font><br />    <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t,<br />    <font color=\"navajowhite\">avg</font>(query_duration_ms)  select_duration<br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font><br />    <font color=\"darkcyan\">$timeFilter</font><br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">2</font><br />    <font color=\"yellow\">and</font> positionCaseInsensitive(query,  <font color=\"lightgreen\">'select'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font><br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br /><font color=\"darkorange\">GROUP BY</font> t<br /><font color=\"darkorange\">ORDER BY</font> t",
+          "intervalFactor": 2,
+          "query": "SELECT\n    $timeSeries as t,\n    avg(query_duration_ms)  select_duration\nFROM $table\nWHERE\n    $timeFilter\n    AND type = 2\n    and positionCaseInsensitive(query,  'select') = 1\n    and initial_user in ($user)\nGROUP BY t\nORDER BY t",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 4) * 4) * 1000 as t,\n    avg(query_duration_ms)  select_duration\nFROM system.query_log\nWHERE\n    event_date >= toDate(1608193103) AND event_time >= toDateTime(1608193103)\n    AND type = 2\n    and positionCaseInsensitive(query,  'select') = 1\n    and initial_user in ('u_ops','default')\nGROUP BY t\nORDER BY t",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "query_log",
+          "tableLoading": false
+        },
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "expr": "",
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "<font color=\"darkorange\">SELECT</font><br />    <font color=\"darkcyan\">$timeSeries</font> <font color=\"darkorange\">as</font> t,<br />    <font color=\"navajowhite\">avg</font>(query_duration_ms) insert_duration<br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font><br />    <font color=\"darkcyan\">$timeFilter</font><br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">2</font><br /><font color=\"yellow\">and</font> positionCaseInsensitive(query,  <font color=\"lightgreen\">'insert into'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font><br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br /><font color=\"darkorange\">GROUP BY</font> t<br /><font color=\"darkorange\">ORDER BY</font> t",
+          "intervalFactor": 2,
+          "query": "SELECT\n    $timeSeries as t,\n    avg(query_duration_ms) insert_duration\nFROM $table\nWHERE\n    $timeFilter\n    AND type = 2\nand positionCaseInsensitive(query,  'insert into') = 1\n    and initial_user in ($user)\nGROUP BY t\nORDER BY t",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 4) * 4) * 1000 as t,\n    avg(query_duration_ms) insert_duration\nFROM system.query_log\nWHERE\n    event_date >= toDate(1608193175) AND event_time >= toDateTime(1608193175)\n    AND type = 2\nand positionCaseInsensitive(query,  'insert into') = 1\n    and initial_user in ('u_ops','default')\nGROUP BY t\nORDER BY t",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Query duration by type: $type; user: $user",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 24,
+      "panels": [],
+      "title": "Query log table",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 21,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 3,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "link": false,
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "Duration",
+          "thresholds": [],
+          "type": "number",
+          "unit": "ms"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "pattern": "Memory",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "ReadRows",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "ReadBytes",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "<font color=\"darkorange\">SELECT</font><br />    event_time,<br />    user,<br />    query_duration_ms duration,<br />    memory_usage memory,<br />    if(exception<font color=\"yellow\">!=</font><font color=\"lightgreen\">''</font>, <font color=\"lightgreen\">'fail'</font>, <font color=\"lightgreen\">'success'</font>) result,<br />    <font color=\"navajowhite\">concat</font>(<font color=\"navajowhite\">substring</font>(query,<font color=\"cornflowerblue\">1</font>,<font color=\"cornflowerblue\">120</font>), <font color=\"lightgreen\">'...'</font>) query<br /><font color=\"darkorange\">FROM</font> <font color=\"darkcyan\">$table</font><br /><font color=\"darkorange\">WHERE</font> <font color=\"darkcyan\">$timeFilter</font><br />    <font color=\"yellow\">AND</font> <font color=\"darkorange\">type</font> <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$type</font>)<br />    <font color=\"yellow\">and</font> initial_user <font color=\"darkorange\">in</font> (<font color=\"darkcyan\">$user</font>)<br />    <font color=\"yellow\">and</font>(<font color=\"lightgreen\">'$query_type'</font> <font color=\"yellow\">=</font> <font color=\"lightgreen\">'all'</font> <font color=\"yellow\">or</font>(positionCaseInsensitive(query,  <font color=\"lightgreen\">'$query_type'</font>) <font color=\"yellow\">=</font> <font color=\"cornflowerblue\">1</font>))<br /><font color=\"darkorange\">ORDER BY</font> event_time <font color=\"darkorange\">DESC</font><br /><font color=\"darkorange\">LIMIT</font> <font color=\"cornflowerblue\">1000</font>",
+          "intervalFactor": 1,
+          "query": "SELECT\n    event_time as EventTime,\n    concat(substring(query,1,120), '...') Query,\n    if(exception!='', 'fail', 'success') Result,\n    user as Operator,\n    query_duration_ms as Duration,\n    memory_usage as Memory,\n    read_rows as ReadRows,\n    read_bytes as ReadBytes\nFROM $table\nWHERE $timeFilter\n    AND type in ($type)\n    and initial_user in ($user)\n    and('$query_type' = 'all' or(positionCaseInsensitive(query,  '$query_type') = 1))\nORDER BY EventTime DESC\nLIMIT 1000",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 2) * 2) * 1000 as t,\n    ProfileEvent_MergedRows\nFROM system.metric_log\n\nWHERE event_time >= toDateTime(1608193667)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Query log by type: $type; user: $user; query type: $query_type",
+      "transform": "timeseries_to_columns",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 52
+      },
+      "id": 51,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 2,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Duration",
+          "thresholds": [],
+          "type": "number",
+          "unit": "ms"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 1,
+          "link": false,
+          "mappingType": 1,
+          "pattern": "ReadRows",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "ReadBytes",
+          "thresholds": [],
+          "type": "number",
+          "unit": "bytes"
+        }
+      ],
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "table",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    event_time as EventTime,\n    substring(query, 1, 140) as Query,\n    user as Operator,\n    query_duration_ms as Duration,\n    read_rows as ReadRows,\n    read_bytes as ReadBytes\n\nFROM $table\n\nWHERE $timeFilter\n\nORDER BY Duration DESC\n\nLIMIT $top\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 2) * 2) * 1000 as t,\n    ProfileEvent_InsertedRows\nFROM system.metric_log\nWHERE event_date >= toDate(1608193246) AND event_time >= toDateTime(1608193246)\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "query_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "TimeRange Top $top Slow Query Basic",
+      "transform": "table",
+      "type": "table-old"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "µs"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 58
+      },
+      "id": 32,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    toInt32(date_trunc('minute', toDateTime(event_time))) * 1000 as t,\n    avg(ProfileEvent_OSCPUWaitMicroseconds) as ProfileEvent_OSCPUWaitMicroseconds\nFROM $table\nWHERE $timeFilter\nGROUP BY t\nORDER BY t\n",
+          "rawQuery": "SELECT\n    toInt32(date_trunc('minute', toDateTime(event_time))) * 1000 as t,\n    avg(ProfileEvent_OSCPUWaitMicroseconds) as ProfileEvent_OSCPUWaitMicroseconds\nFROM system.metric_log\nWHERE event_date >= toDate(1616030910) AND event_time >= toDateTime(1616030910)\nGROUP BY t\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "CPU Wait Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "µs"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 58
+      },
+      "id": 48,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_OSIOWaitMicroseconds) as ProfileEvent_OSIOWaitMicroseconds\nFROM $table\nWHERE $timeFilter\nGROUP BY t\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_MergedRows) as ProfileEvent_MergedRows\nFROM system.metric_log\n\nWHERE event_time >= toDateTime(1616059575)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "IO Wait Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "µs"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 66
+      },
+      "id": 61,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_ZooKeeperWaitMicroseconds) as ProfileEvent_ZooKeeperWaitMicroseconds\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_FailedQuery) ProfileEvent_FailedQuery\nFROM system.metric_log\n\nWHERE event_date >= toDate(1609221214) AND event_time >= toDateTime(1609221214)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Zookeeper Wait Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 66
+      },
+      "id": 47,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 2,
+          "query": "SELECT\n    $timeSeries as t,\n    CurrentMetric_MemoryTracking\nFROM $table\nWHERE $timeFilter\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 2) * 2) * 1000 as t,\n    CurrentMetric_TCPConnection\nFROM system.metric_log\nWHERE event_date >= toDate(1608787421) AND event_time >= toDateTime(1608787421)\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Memory Used",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 74
+      },
+      "id": 34,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_InsertedBytes) as ProfileEvent_InsertedBytes\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_InsertedBytes) as ProfileEvent_InsertedBytes\nFROM system.metric_log\n\nWHERE event_date >= toDate(1608861376) AND event_time >= toDateTime(1608861376)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Write Bytes Per Second",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "row/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 74
+      },
+      "id": 36,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_InsertedRows) as ProfileEvent_InsertedRows\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_InsertedRows) as ProfileEvent_InsertedRows\nFROM system.metric_log\n\nWHERE event_date >= toDate(1608861133) AND event_time >= toDateTime(1608861133)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Write Rows Per Second",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 82
+      },
+      "id": 38,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_MergedUncompressedBytes) as ProfileEvent_MergedUncompressedBytes\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n",
+          "rawQuery": "SELECT\n    database as DatabaseName,\n    table as TableName,\n    count(1) as ColumnCnt\nFROM system.columns\nWHERE database!='system'\nGROUP BY DatabaseName, TableName",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Merged Uncompressed Bytes Per Second",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "rows/s",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 82
+      },
+      "id": 40,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_MergedRows) as ProfileEvent_MergedRows\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_MergedRows) as ProfileEvent_MergedRows\nFROM system.metric_log\n\nWHERE event_time >= toDateTime(1608707620)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Merged Rows Per Second",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 90
+      },
+      "id": 42,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    $timeSeries as t,\n    CurrentMetric_HTTPConnection\nFROM $table\n\nWHERE $timeFilter\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 2) * 2) * 1000 as t,\n    CurrentMetric_TCPConnection\nFROM system.metric_log\n\nWHERE event_date >= toDate(1608021670) AND event_time >= toDateTime(1608021670)",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "HTTP Connection",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 90
+      },
+      "id": 43,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    $timeSeries as t,\n    CurrentMetric_TCPConnection\nFROM $table\nWHERE $timeFilter\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(event_time), 2) * 2) * 1000 as t,\n    CurrentMetric_TCPConnection\nFROM system.metric_log\nWHERE event_date >= toDate(1608113382) AND event_time >= toDateTime(1608113382)\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "TCP Connection",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 98
+      },
+      "id": 49,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_Query) as ProfileEvent_Query\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_Query) as ProfileEvent_Query\nFROM system.metric_log\n\nWHERE event_date >= toDate(1608707645) AND event_time >= toDateTime(1608707645)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "QPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "vertamedia-clickhouse-datasource",
+        "uid": "clickhouse-altinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#C4162A",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 98
+      },
+      "id": 59,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "database": "system",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "clickhouse-altinity"
+          },
+          "dateColDataType": "event_date",
+          "dateLoading": false,
+          "dateTimeColDataType": "event_time",
+          "dateTimeType": "DATETIME",
+          "datetimeLoading": false,
+          "extrapolate": true,
+          "format": "time_series",
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "query": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_FailedQuery) ProfileEvent_FailedQuery\nFROM $table\n\nWHERE $timeFilter\n\nGROUP BY t\n\nORDER BY t\n",
+          "rawQuery": "SELECT\n    (intDiv(toUInt32(toDateTime(concat(substr(toString(event_time), 1, 16), ':00'))), 2) * 2) * 1000 as t,\n    avg(ProfileEvent_FailedQuery) ProfileEvent_FailedQuery\nFROM system.metric_log\n\nWHERE event_date >= toDate(1609221227) AND event_time >= toDateTime(1609221227)\n\nGROUP BY t\n\nORDER BY t",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "metric_log",
+          "tableLoading": false
+        }
+      ],
+      "title": "Failed QPS",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 40,
+  "tags": [
+    "clickhouse",
+    "performance"
+  ],
+  "templating": {
+    "list": [
+      {
+        "auto": true,
+        "auto_count": 100,
+        "auto_min": "1m",
+        "current": {
+          "text": "5m",
+          "value": "5m"
+        },
+        "hide": 2,
+        "name": "interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "5m",
+            "value": "5m"
+          }
+        ],
+        "query": "5m",
+        "refresh": 2,
+        "type": "interval"
+      },
+      {
+        "current": {
+          "text": [
+            "$__all"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "includeAll": true,
+        "label": "type",
+        "multi": true,
+        "name": "type",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": false,
+            "text": "2",
+            "value": "2"
+          },
+          {
+            "selected": false,
+            "text": "3",
+            "value": "3"
+          },
+          {
+            "selected": false,
+            "text": "4",
+            "value": "4"
+          }
+        ],
+        "query": "1,2,3,4",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "30",
+          "value": "30"
+        },
+        "includeAll": false,
+        "label": "top elements",
+        "name": "top",
+        "options": [
+          {
+            "selected": false,
+            "text": "5",
+            "value": "5"
+          },
+          {
+            "selected": false,
+            "text": "10",
+            "value": "10"
+          },
+          {
+            "selected": false,
+            "text": "15",
+            "value": "15"
+          },
+          {
+            "selected": false,
+            "text": "20",
+            "value": "20"
+          },
+          {
+            "selected": false,
+            "text": "25",
+            "value": "25"
+          },
+          {
+            "selected": true,
+            "text": "30",
+            "value": "30"
+          }
+        ],
+        "query": "5,10,15,20,25,30",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": [
+            ""
+          ],
+          "value": [
+            ""
+          ]
+        },
+        "datasource": "clickhouse-altinity",
+        "definition": "select distinct initial_user from system.query_log where event_date >= today()-3 and event_time > toDateTime(today()-3)",
+        "includeAll": true,
+        "label": "initial user",
+        "multi": true,
+        "name": "user",
+        "options": [],
+        "query": "select distinct initial_user from system.query_log where event_date >= today()-3 and event_time > toDateTime(today()-3)",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "all",
+          "value": "all"
+        },
+        "includeAll": false,
+        "label": "query type",
+        "name": "query_type",
+        "options": [
+          {
+            "selected": true,
+            "text": "all",
+            "value": "all"
+          },
+          {
+            "selected": false,
+            "text": "select",
+            "value": "select"
+          },
+          {
+            "selected": false,
+            "text": "insert",
+            "value": "insert"
+          }
+        ],
+        "query": "all,select,insert",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "ClickHouse Performance",
+  "uid": "TFajSstMk2",
+  "version": 1,
+  "weekStart": ""
+}

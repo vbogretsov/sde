@@ -1,0 +1,2638 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 16,
+  "links": [],
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h1 style=\"color:#87CEEB; border-bottom: 3px solid #87CEEB;\">Redpanda Summary</h1>",
+        "mode": "html"
+      },
+      "pluginVersion": "11.5.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 2,
+        "x": 0,
+        "y": 2
+      },
+      "id": 2,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "redpanda_cluster_brokers",
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "Nodes Up",
+          "refId": "A",
+          "step": 40
+        }
+      ],
+      "title": "Nodes Up",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 2,
+        "y": 2
+      },
+      "id": 5,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum(rate(redpanda_kafka_request_latency_seconds_bucket{instance=~\"$node\", redpanda_request=\"consume\"}[$__rate_interval])) by (le, provider, region, instance, namespace, pod))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "node: {{instance}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Latency of Kafka consume requests (p95) per broker",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 13,
+        "y": 2
+      },
+      "id": 7,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum(rate(redpanda_kafka_request_latency_seconds_bucket{instance=~\"$node\", redpanda_request=\"consume\"}[$__rate_interval])) by (le, provider, region, instance, namespace, pod))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "node: {{instance}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Latency of Kafka consume requests (p99) per broker",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 2,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "maxDataPoints": 100,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "redpanda_cluster_partitions",
+          "instant": true,
+          "legendFormat": "Partition count",
+          "refId": "A"
+        }
+      ],
+      "title": "Partitions",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 2,
+        "y": 8
+      },
+      "id": 4,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum(rate(redpanda_kafka_request_latency_seconds_bucket{instance=~\"$node\", redpanda_request=\"produce\"}[$__rate_interval])) by (le, provider, region, instance, namespace, pod))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "node: {{instance}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Latency of Kafka produce requests (p95) per broker",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 11,
+        "x": 13,
+        "y": 8
+      },
+      "id": 6,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum(rate(redpanda_kafka_request_latency_seconds_bucket{instance=~\"$node\", redpanda_request=\"produce\"}[$__rate_interval])) by (le, provider, region, instance, namespace, pod))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "node: {{instance}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Latency of Kafka produce requests (p99) per broker",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "id": 8,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h1 style=\"color:#87CEEB; border-bottom: 3px solid #87CEEB;\">Internal RPC Latency</h1>",
+        "mode": "html"
+      },
+      "pluginVersion": "11.5.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 11,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h1 style=\"color:#87CEEB; border-bottom: 3px solid #87CEEB;\">Throughput</h1>",
+        "mode": "html"
+      },
+      "pluginVersion": "11.5.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 16
+      },
+      "id": 9,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum(rate(redpanda_rpc_request_latency_seconds_bucket{instance=~\"$node\",redpanda_server=\"internal\"}[$__rate_interval])) by (le, $aggr_criteria))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "node: {{instance}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "RPC latency (p95)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 16
+      },
+      "id": 10,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum(rate(redpanda_rpc_request_latency_seconds_bucket{instance=~\"$node\",redpanda_server=\"internal\"}[$__rate_interval])) by (le, $aggr_criteria))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "node: {{instance}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "RPC latency (p99)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 12,
+      "interval": "1m",
+      "options": {
+        "alertThreshold": true,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(redpanda_kafka_request_bytes_total[$__rate_interval])) by (redpanda_request)",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "redpanda_request: {{redpanda_request}}",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Throughput of Kafka produce/consume requests for the cluster",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 50,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 28
+          },
+          "id": 49,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_rest_proxy_request_errors_total{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_status: {{redpanda_status}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Total number of rest_proxy server errors",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 28
+          },
+          "id": 53,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_rpc_request_errors_total{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_server: {{redpanda_server}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Number of rpc errors",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 28
+          },
+          "id": 57,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_schema_registry_request_errors_total{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_status: {{redpanda_status}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Total number of schema_registry server errors",
+          "type": "timeseries"
+        }
+      ],
+      "title": "errors",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 27,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 29
+          },
+          "id": 26,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_io_queue_total_read_ops{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, class: {{class}}, ioshard: {{ioshard}}, mountpoint: {{mountpoint}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Total read operations passed in the queue",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 29
+          },
+          "id": 28,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_io_queue_total_write_ops{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, class: {{class}}, ioshard: {{ioshard}}, mountpoint: {{mountpoint}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Total write operations passed in the queue",
+          "type": "timeseries"
+        }
+      ],
+      "title": "io_queue",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 39,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 30
+          },
+          "id": 42,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_memory_free_memory{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Free memory size in bytes",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 30
+          },
+          "id": 40,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_memory_available_memory{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Total shard memory potentially available in bytes (free_memory plus reclaimable)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 30
+          },
+          "id": 41,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_memory_available_memory_low_water_mark{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "The low-water mark for available_memory from process start",
+          "type": "timeseries"
+        }
+      ],
+      "title": "memory",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 14,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 13,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_application_build{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_revision: {{redpanda_revision}}, redpanda_version: {{redpanda_version}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Redpanda build information",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 17,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_controller_log_limit_requests_available_rps{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_cmd_group: {{redpanda_cmd_group}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Controller log rate limiting. Available rps for group",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 20,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_partition_moving_to_node{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Amount of partitions that are moving to node",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 23,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_topics{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of topics in the cluster",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 29,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_consumer_group_committed_offset{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_group: {{redpanda_group}}, redpanda_partition: {{redpanda_partition}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Consumer group committed offset",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 32,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_max_offset{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_namespace: {{redpanda_namespace}}, redpanda_partition: {{redpanda_partition}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Latest committed offset for the partition (i.e. the offset of the last message safely persisted on most replicas)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 35,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_kafka_request_bytes_total{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_namespace: {{redpanda_namespace}}, redpanda_request: {{redpanda_request}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Total number of bytes produced per topic",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 43,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_node_status_rpcs_received{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of node status RPCs received by this node",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 51,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_rest_proxy_request_latency_seconds_bucket{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Internal latency of request for rest_proxy",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 31
+          },
+          "id": 58,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_schema_registry_request_latency_seconds_bucket{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Internal latency of request for schema_registry",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 15,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_application_uptime_seconds_total{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Redpanda uptime in seconds",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 18,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_cluster_controller_log_limit_requests_dropped{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_cmd_group: {{redpanda_cmd_group}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Controller log rate limiting. Amount of requests that are dropped due to exceeding limit in group",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 21,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_partition_node_cancelling_movements{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Amount of cancelling partition movements for node",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 24,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_unavailable_partitions{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of partitions that lack quorum among replicants",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 30,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_consumer_group_consumers{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_group: {{redpanda_group}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of consumers in a group",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 33,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_partitions{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_namespace: {{redpanda_namespace}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Configured number of partitions for the topic",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 36,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_request_latency_seconds{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_request: {{redpanda_request}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Internal latency of kafka produce requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 44,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_node_status_rpcs_sent{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of node status RPCs sent by this node",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 31
+          },
+          "id": 52,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_rpc_active_connections{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_server: {{redpanda_server}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Count of currently active connections",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 16,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_brokers{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of configured brokers in the cluster",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 19,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_partition_moving_from_node{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Amount of partitions that are moving from node",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 22,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cluster_partitions{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of partitions in the cluster (replicas not included)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 25,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_cpu_busy_seconds_total{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Total CPU busy time in seconds",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 31,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_consumer_group_topics{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_group: {{redpanda_group}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of topics in a group",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 34,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_replicas{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_namespace: {{redpanda_namespace}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Configured number of replicas for the topic",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 37,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_kafka_under_replicated_replicas{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_namespace: {{redpanda_namespace}}, redpanda_partition: {{redpanda_partition}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of under replicated replicas (i.e. replicas that are live, but not at the latest offest)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 45,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_node_status_rpcs_timed_out{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Number of timed out node status RPCs from this node",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 31
+          },
+          "id": 54,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_rpc_request_latency_seconds{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_server: {{redpanda_server}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "RPC latency",
+          "type": "timeseries"
+        }
+      ],
+      "title": "others",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 47,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 32
+          },
+          "id": 46,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_raft_leadership_changes{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_namespace: {{redpanda_namespace}}, redpanda_topic: {{redpanda_topic}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Number of leadership changes across all partitions of a given topic",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 32
+          },
+          "id": 48,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_raft_recovery_partition_movement_available_bandwidth{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Bandwidth available for partition movement. bytes/sec",
+          "type": "timeseries"
+        }
+      ],
+      "title": "raft",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 56,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 33
+          },
+          "id": 55,
+          "interval": "1m",
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(rate(redpanda_scheduler_runtime_seconds_total{instance=~\"$node\"}[$__rate_interval])) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}, redpanda_scheduling_group: {{redpanda_scheduling_group}}, shard: {{shard}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Rate - Accumulated runtime of task queue associated with this scheduling group",
+          "type": "timeseries"
+        }
+      ],
+      "title": "scheduler",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 60,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 34
+          },
+          "id": 59,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_storage_disk_free_bytes{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Disk storage bytes free.",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 34
+          },
+          "id": 61,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_storage_disk_free_space_alert{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Status of low storage space alert. 0-OK, 1-Low Space 2-Degraded",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 34
+          },
+          "id": 62,
+          "options": {},
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "expr": "sum(redpanda_storage_disk_total_bytes{instance=~\"$node\"}) by ($aggr_criteria)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "node: {{instance}}",
+              "refId": "A",
+              "step": 10
+            }
+          ],
+          "title": "Total size of attached storage, in bytes.",
+          "type": "timeseries"
+        }
+      ],
+      "title": "storage",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "Prometheus",
+          "value": "prometheus"
+        },
+        "includeAll": false,
+        "label": "Data Source",
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "",
+        "includeAll": true,
+        "label": "Node",
+        "multi": true,
+        "name": "node",
+        "options": [],
+        "query": {
+          "query": "label_values(instance)",
+          "refId": "Prometheus-node-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "",
+        "includeAll": true,
+        "label": "Shard",
+        "multi": true,
+        "name": "node_shard",
+        "options": [],
+        "query": {
+          "query": "label_values(shard)",
+          "refId": "Prometheus-node_shard-Variable-Query"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cluster",
+          "value": "cluster"
+        },
+        "includeAll": false,
+        "label": "Aggregate by",
+        "name": "aggr_criteria",
+        "options": [
+          {
+            "selected": true,
+            "text": "Cluster",
+            "value": "cluster"
+          },
+          {
+            "selected": false,
+            "text": "Instance",
+            "value": "instance"
+          },
+          {
+            "selected": false,
+            "text": "Instance,Shard",
+            "value": "instance,shard"
+          }
+        ],
+        "query": "Cluster : cluster,Instance : instance,Instance\\,Shard : instance\\,shard",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Redpanda Default Dashboard",
+  "uid": "d9gY-aJ4k",
+  "version": 1,
+  "weekStart": ""
+}

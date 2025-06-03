@@ -1,0 +1,29 @@
+{
+  "type": "record",
+  "name": "LocationDTO",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "uid",
+      "type": "string"
+    },
+    {
+      "name": "_cid",
+      "type": "string"
+    },
+    {
+      "name": "loc",
+      "type": {
+        "type": "array",
+        "items": "float"
+      }
+    },
+    {
+      "name": "updated_at",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-micros"
+      }
+    }
+  ]
+}

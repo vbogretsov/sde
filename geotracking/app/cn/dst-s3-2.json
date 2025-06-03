@@ -1,0 +1,28 @@
+{
+  "name": "app-dst-routes",
+  "config": {
+    "connector.class": "io.confluent.connect.s3.S3SinkConnector",
+    "tasks.max": "1",
+    "topics.regex": "app.app.track_routes",
+    "store.url": "http://s3:9000",
+    "s3.region": "us-east-1",
+    "s3.bucket.name": "data",
+    "store.kafka.keys": false,
+    "store.kafka.headers": false,
+    "aws.access.key.id": "minio_access_key",
+    "aws.secret.access.key": "minio_secret_key",
+    "locale": "en-US",
+    "timezone": "UTC",
+    "format.class": "io.confluent.connect.s3.format.parquet.ParquetFormat",
+    "flush.size": 10000,
+    "rotate.schedule.interval.ms": 180000,
+    "schema.compatibility": "BACKWARD",
+    "parquet.codec": "snappy",
+    "s3.path.style.access": "true",
+    "storage.class": "io.confluent.connect.s3.storage.S3Storage",
+    "behavior.on.null.values": "ignore",
+    "partitioner.class": "io.confluent.connect.storage.partitioner.HourlyPartitioner",
+    "timestamp.extractor": "RecordField",
+    "timestamp.field": "updated_at"
+  }
+}

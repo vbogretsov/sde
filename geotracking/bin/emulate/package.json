@@ -1,0 +1,11 @@
+{
+  "name": "routes",
+  "version": "1.0.0",
+  "main": "routes.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@project-osrm/osrm": "^6.0.0"
+  }
+}
