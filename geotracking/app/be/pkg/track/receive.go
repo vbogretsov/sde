@@ -65,6 +65,17 @@ func readLocation(payload []byte) (LocationModel, error) {
 	return dto.toModel(), nil
 }
 
+func copyOffsets(offsets []kafka.Message) []kafka.Message {
+	result := []kafka.Message{}
+	for _, m := range offsets {
+		if m.Topic == "" {
+			continue
+		}
+		result = append(result, m)
+	}
+	return result
+}
+
 func flushLocations(
 	ctx context.Context,
 	col *mongo.Collection,
@@ -163,7 +174,7 @@ func flushLocations(
 	flushed := time.Now()
 
 	select {
-	case ack <- offsets:
+	case ack <- copyOffsets(offsets):
 	case <-ctx.Done():
 		return ctx.Err()
 	}

@@ -97,12 +97,10 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 		for {
 			select {
 			case msgs := <-ack:
-				commit := make([]kafka.Message, 0, len(msgs))
 				for _, msg := range msgs {
 					if msg.Topic == "" {
 						continue
 					}
-					commit = append(commit, msg)
 					slog.Info(
 						"going to commit offset",
 						slog.Any("topic", msg.Topic),
@@ -111,8 +109,7 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 					)
 				}
 
-
-				if err := consumer.CommitMessages(ctx, commit...); err != nil {
+				if err := consumer.CommitMessages(ctx, msgs...); err != nil {
 					slog.Error("failed to commit offsets", slog.Any("err", err))
 					cancel()
 					return err

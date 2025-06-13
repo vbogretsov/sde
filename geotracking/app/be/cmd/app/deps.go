@@ -60,6 +60,7 @@ func newConsumer(cfg config.Kafka) *kafka.Reader {
 		Topic:          track.TopicLocation,
 		CommitInterval: cfg.Consumer.CommitInterval,
 		QueueCapacity:  cfg.Consumer.QueueCapacity,
+		MinBytes:       1,
 		MaxBytes:       cfg.Consumer.MaxBytes,
 		MaxWait:        cfg.Consumer.MaxWait,
 	})
