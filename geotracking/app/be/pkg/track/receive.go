@@ -65,33 +65,6 @@ func readLocation(payload []byte) (LocationModel, error) {
 	return dto.toModel(), nil
 }
 
-func flushLocations2(
-	ctx context.Context,
-	col *mongo.Collection,
-	timeout time.Duration,
-	ack chan<- []kafka.Message,
-	dlq chan<- kafka.Message,
-	records [][]kafka.Message,
-	offsets []kafka.Message,
-) error {
-	commits := make([]kafka.Message, len(records))
-	for part, recs := range records {
-		if len(recs) == 0 {
-			continue
-		}
-		commits[part] = recs[len(recs)-1]
-
-	}
-
-	select {
-	case ack <- commits:
-	case <-ctx.Done():
-		return ctx.Err()
-	}
-
-	return nil
-}
-
 func flushLocations(
 	ctx context.Context,
 	col *mongo.Collection,
@@ -102,6 +75,10 @@ func flushLocations(
 	records [][]kafka.Message,
 	offsets []kafka.Message,
 ) error {
+	if batchSize == 0 {
+		return nil
+	}
+
 	var result error
 
 	var sem sync.WaitGroup
@@ -149,7 +126,7 @@ func flushLocations(
 			ctx, cancel := context.WithTimeout(ctx, timeout)
 			defer cancel()
 
-			res, err := col.BulkWrite(ctx, batch, opts)
+			_, err := col.BulkWrite(ctx, batch, opts)
 			if err != nil {
 				bwErr, ok := err.(mongo.BulkWriteException)
 				if ok {
@@ -173,7 +150,6 @@ func flushLocations(
 			slog.Info(
 				"committed partition batch",
 				slog.Any("size", len(batch)),
-				slog.Any("upserted", res.UpsertedCount),
 			)
 
 			clear(records[p])
@@ -235,11 +211,13 @@ func Consume(
 				continue
 			}
 
+			slog.Info("flush by batch size", "batchSize", batchSize)
 			if err := flushLocations(ctx, col, mongoWriteTimeout, ack, dlq, batchSize, records, offsets); err != nil {
 				return err
 			}
 			batchSize = 0
 		case <-tic.C:
+			slog.Info("flush by timeout", "batchSize", batchSize)
 			if err := flushLocations(ctx, col, mongoWriteTimeout, ack, dlq, batchSize, records, offsets); err != nil {
 				return err
 			}

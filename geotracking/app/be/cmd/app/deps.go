@@ -3,7 +3,6 @@ package main
 import (
 	"log/slog"
 	"strings"
-	"time"
 
 	"github.com/segmentio/kafka-go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -19,7 +18,7 @@ func onKafkaWrite(msgs []kafka.Message, err error) {
 		slog.Error("failed to produce batch of messages", "err", err)
 		return
 	}
-	slog.Info("committed batch of messages", "len", len(msgs))
+	slog.Warn("committed batch of messages", "len", len(msgs))
 }
 
 func newMongo(cfg config.Mongo, wc *writeconcern.WriteConcern) (*mongo.Client, error) {
@@ -44,10 +43,10 @@ func newProducer(cfg config.Kafka) *kafka.Writer {
 		Addr:         kafka.TCP(brokers...),
 		Async:        true,
 		RequiredAcks: kafka.RequireAll,
-		BatchSize:    cfg.BatchSize,
-		BatchTimeout: cfg.BatchTimeout,
+		BatchSize:    cfg.Producer.BatchSize,
+		BatchTimeout: cfg.Producer.BatchTimeout,
 		Balancer:     &kafka.Hash{},
-		MaxAttempts:  100,
+		MaxAttempts:  cfg.Producer.MaxAttempts,
 		Completion:   onKafkaWrite,
 	}
 }
@@ -56,14 +55,13 @@ func newConsumer(cfg config.Kafka) *kafka.Reader {
 	brokers := strings.Split(cfg.BrokerURL, ",")
 	slog.Info("connecting to kafka brokers", "brokers", brokers)
 	return kafka.NewReader(kafka.ReaderConfig{
-		GroupID:        cfg.GroupID,
+		GroupID:        cfg.Consumer.GroupID,
 		Brokers:        brokers,
 		Topic:          track.TopicLocation,
-		CommitInterval: 2 * time.Second, // Async Commit
-		QueueCapacity:  20000,
-		MinBytes:       1 << 10,
-		MaxBytes:       1 << 22,
-		MaxWait:        50 * time.Millisecond,
+		CommitInterval: cfg.Consumer.CommitInterval,
+		QueueCapacity:  cfg.Consumer.QueueCapacity,
+		MaxBytes:       cfg.Consumer.MaxBytes,
+		MaxWait:        cfg.Consumer.MaxWait,
 	})
 }
 

@@ -52,6 +52,8 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 
 	e.GET("/healthz", health.Healthz)
 
+	go runHTTPServer(ctx, e, cfg.Service.Listen.Address())
+
 	nparts, err := getNumPartitions(track.TopicLocation)
 	if err != nil {
 		return err
@@ -90,7 +92,7 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 		}
 	})
 
-	ack := make(chan []kafka.Message, 200000 * cfg.Topic.TopicNumPartitions)
+	ack := make(chan []kafka.Message, cfg.Worker.ACKBufferSize * cfg.Topic.TopicNumPartitions)
 	g.Go(func() error {
 		for {
 			select {
@@ -101,6 +103,12 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 						continue
 					}
 					commit = append(commit, msg)
+					slog.Info(
+						"going to commit offset",
+						slog.Any("topic", msg.Topic),
+						slog.Any("partition", msg.Partition),
+						slog.Any("offset", msg.Offset),
+					)
 				}
 
 
@@ -109,8 +117,7 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 					cancel()
 					return err
 				}
-
-				slog.Info("offsets commited")
+				slog.Info("offsets have been committed")
 			case <-ctx.Done():
 				slog.Warn("context canceled", "goroutine", "ack")
 				return ctx.Err()
@@ -118,7 +125,7 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 		}
 	})
 
-	dlq := make(chan kafka.Message, 100)
+	dlq := make(chan kafka.Message, cfg.Worker.DLQBufferSize)
 	g.Go(func() error {
 		for {
 			select {
@@ -136,9 +143,9 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 		}
 	})
 
-	in := make(chan kafka.Message, cfg.Kafka.BatchSize)
+	in := make(chan kafka.Message, cfg.Worker.FlushBatchSize)
 
-	tic := time.NewTicker(cfg.Kafka.BatchTimeout)
+	tic := time.NewTicker(cfg.Worker.FlushBatchTimeout)
 	defer tic.Stop()
 
 	g.Go(func() error {

@@ -5,6 +5,9 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/karagenc/fj4echo"
 	"github.com/labstack/echo/v4"
@@ -18,6 +21,35 @@ import (
 	"app/pkg/health"
 	"app/pkg/track"
 )
+
+func runHTTPServer(ctx context.Context, e *echo.Echo, address string) error {
+	f := &fasthttp.Server{
+		Handler: fasthttpadaptor.NewFastHTTPHandler(e),
+	}
+
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGTERM)
+	defer stop()
+
+	var result error
+	go func () {
+		if err := f.ListenAndServe(address); err != nil {
+			slog.Error("server terminated with error", "err", err)
+			result = err
+		}
+	}()
+
+	<-ctx.Done()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := f.Shutdown(); err != nil {
+		slog.Error("failed to gracefully stop HTTP server", "err", err)
+		return err
+	}
+	
+	return result
+}
 
 func runSvc(ctx context.Context, _ *cli.Command) error {
 	l := slog.New(slog.NewJSONHandler(os.Stdout, cfg.Logging.ToOptions()))
@@ -61,23 +93,17 @@ func runSvc(ctx context.Context, _ *cli.Command) error {
 		AllowMethods: []string{http.MethodGet},
 	}))
 
-	g := e.Group("/api/track")
-	g.POST("/routes", trackAPI.RoutePost)
-	g.POST("/locations", trackAPI.LocationPost)
-	g.GET("/locations", trackAPI.CourierList)
-
-	f := &fasthttp.Server{
-		Handler: fasthttpadaptor.NewFastHTTPHandler(e),
-	}
+	r := e.Group("/api/track")
+	r.POST("/routes", trackAPI.RoutePost)
+	r.POST("/locations", trackAPI.LocationPost)
+	r.GET("/locations", trackAPI.CourierList)
 
 	slog.Info(
 		"Starting Tracker HTTP service",
-		slog.Any("host", cfg.Listen.Host),
-		slog.Any("port", cfg.Listen.Port),
+		slog.Any("host", cfg.Service.Listen.Host),
+		slog.Any("port", cfg.Service.Listen.Port),
 	)
 
 	slog.Debug("Application configuration", "cfg", cfg)
-
-	// TODO: Use gracefull shutdown
-	return f.ListenAndServe(cfg.Listen.Address())
+	return runHTTPServer(ctx, e, cfg.Service.Listen.Address())
 }

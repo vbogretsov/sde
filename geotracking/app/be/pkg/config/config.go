@@ -26,10 +26,19 @@ type Mongo struct {
 }
 
 type Kafka struct {
-	BrokerURL    string
-	GroupID      string
-	BatchSize    int
-	BatchTimeout time.Duration
+	BrokerURL string
+	Consumer  struct {
+		GroupID        string
+		CommitInterval time.Duration
+		QueueCapacity  int
+		MaxWait        time.Duration
+		MaxBytes       int
+	}
+	Producer struct {
+		MaxAttempts  int
+		BatchSize    int
+		BatchTimeout time.Duration
+	}
 }
 
 type Topic struct {
@@ -56,10 +65,18 @@ type JWT struct {
 
 type Config struct {
 	Logging        Logging
-	Listen         Listen
 	Kafka          Kafka
 	Topic          Topic
 	Mongo          Mongo
 	SchemaRegistry SchemaRegistry
 	LocationTTL    int
+	Service        struct {
+		Listen Listen
+	}
+	Worker struct {
+		FlushBatchSize    int
+		FlushBatchTimeout time.Duration
+		DLQBufferSize     int
+		ACKBufferSize     int
+	}
 }

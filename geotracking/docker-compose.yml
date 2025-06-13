@@ -1,9 +1,9 @@
 services:
   # Logs
-  flb:
-    extends:
-      file: env/fluentbit/docker-compose.yml
-      service: flb
+  # flb:
+  #   extends:
+  #     file: env/fluentbit/docker-compose.yml
+  #     service: flb
   # Metrics
   v-1:
     extends:
@@ -200,7 +200,6 @@ services:
       - manual
     volumes:
       - ./perf/wrkx/src:/src
-
 
 volumes:
   flb: null

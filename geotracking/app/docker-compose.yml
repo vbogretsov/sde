@@ -1,7 +1,7 @@
 services:
   app-init:
     image: geotracking/app:1
-    command: ["init"]
+    command: [ "init" ]
     restart: on-failure
     labels:
       app.name: app
@@ -19,17 +19,17 @@ services:
       KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
       KAFKA_TOPIC_NUM_PARTITIONS: ${KAFKA_TOPIC_NUM_PARTITIONS}
       KAFKA_TOPIC_REPLICATION_FACTOR: ${KAFKA_TOPIC_REPLICATION_FACTOR}
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.init
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.init
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   app-1:
     image: geotracking/app:1
     build: be
-    command: ["svc"]
+    command: [ "svc" ]
     restart: on-failure
     labels:
       app.name: app
@@ -49,16 +49,16 @@ services:
       KAFKA_PRODUCER_BATCH_TIMEOUT: ${KAFKA_PRODUCER_BATCH_TIMEOUT}
     depends_on:
       - app-init
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.svc
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.svc
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   app-2:
     image: geotracking/app:1
-    command: ["svc"]
+    command: [ "svc" ]
     restart: on-failure
     labels:
       app.name: app
@@ -78,16 +78,16 @@ services:
       KAFKA_PRODUCER_BATCH_TIMEOUT: ${KAFKA_PRODUCER_BATCH_TIMEOUT}
     depends_on:
       - app-init
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.svc
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.svc
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   wrk-1:
     image: geotracking/app:1
-    command: ["wrk"]
+    command: [ "wrk" ]
     restart: on-failure
     labels:
       app.name: app
@@ -105,19 +105,20 @@ services:
       SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
       KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
       LOCATION_TTL: ${LOCATION_TTL}
-      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+      FLUSH_BATCH_SIZE: ${FLUSH_BATCH_SIZE}
+      FLUSH_BATCH_TIMEOUT: ${FLUSH_BATCH_TIMEOUT}
     depends_on:
       - app-init
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.wrk
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.wrk
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   wrk-2:
     image: geotracking/app:1
-    command: ["wrk"]
+    command: [ "wrk" ]
     restart: on-failure
     labels:
       app.name: app
@@ -135,19 +136,20 @@ services:
       SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
       KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
       LOCATION_TTL: ${LOCATION_TTL}
-      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+      FLUSH_BATCH_SIZE: ${FLUSH_BATCH_SIZE}
+      FLUSH_BATCH_TIMEOUT: ${FLUSH_BATCH_TIMEOUT}
     depends_on:
       - app-init
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.wrk
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.wrk
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   wrk-3:
     image: geotracking/app:1
-    command: ["wrk"]
+    command: [ "wrk" ]
     restart: on-failure
     labels:
       app.name: app
@@ -165,19 +167,20 @@ services:
       SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
       KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
       LOCATION_TTL: ${LOCATION_TTL}
-      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+      FLUSH_BATCH_SIZE: ${FLUSH_BATCH_SIZE}
+      FLUSH_BATCH_TIMEOUT: ${FLUSH_BATCH_TIMEOUT}
     depends_on:
       - app-init
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.wrk
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.wrk
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   wrk-4:
     image: geotracking/app:1
-    command: ["wrk"]
+    command: [ "wrk" ]
     restart: on-failure
     labels:
       app.name: app
@@ -195,15 +198,16 @@ services:
       SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
       KAFKA_BROKER_URL: ${KAFKA_BROKER_URL}
       LOCATION_TTL: ${LOCATION_TTL}
-      KAFKA_CONSUMER_BATCH_SIZE: ${KAFKA_CONSUMER_BATCH_SIZE}
+      FLUSH_BATCH_SIZE: ${FLUSH_BATCH_SIZE}
+      FLUSH_BATCH_TIMEOUT: ${FLUSH_BATCH_TIMEOUT}
     depends_on:
       - app-init
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.wrk
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.wrk
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
 
   dp:
     image: dp:1
@@ -220,9 +224,9 @@ services:
       CLICKHOUSE_DSN: clickhouse://default:${CLICKHOUSE_ADMIN_PASSWORD}@ch:9001
     volumes:
       - ./dp:/app
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
-        tag: app.dp
-        labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     fluentd-address: localhost:24224
+    #     tag: app.dp
+    #     labels: "app.name,app.type,log.format,log.timestmap.field,pod.name"

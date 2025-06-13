@@ -7,14 +7,23 @@ bootstrap:
     @openssl rand -base64 756 > ./env/mongo/mongo.key
     @chmod 400 ./env/mongo/mongo.key
 
+
+init:
+    @just m-rs
+    @just ch-init
+    @just app-init
+    @just cn-init
+
+
 m-sh:
-    @docker compose exec m-1 mongosh \
+    @docker compose exec m-2 mongosh \
         -u $MONGO_USER \
         -p $MONGO_PASSWORD \
         --authenticationDatabase admin $MONGO_DATABASE
 
 # writeConcernMajorityJournalDefault: true
 m-rs:
+    @echo Initializing MongoDB ReplicaSet
     @docker compose exec m-1 mongosh \
         -u $MONGO_USER \
         -p $MONGO_PASSWORD \
@@ -28,7 +37,14 @@ m-rs:
             ]\
         })'
 
+
+app-init:
+    @echo Initializing Application...
+    @docker compose --profile app run --rm app-init
+
+
 cn-init:
+    @echo Creating Kafka Connect connectors...
     @curl -X POST -H 'Content-Type: application/json' $CONNECT_ADDR/connectors \
         -d @app/cn/src-mongo.json
     @curl -X POST -H 'Content-Type: application/json' $CONNECT_ADDR/connectors \
@@ -36,24 +52,30 @@ cn-init:
     @curl -X POST -H 'Content-Type: application/json' $CONNECT_ADDR/connectors \
         -d @app/cn/dst-s3-2.json
 
+
 ch-init:
+    @echo Creting ClickHouse tables...
     @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_ADMIN_PASSWORD} \
         -q 'CREATE DATABASE IF NOT EXISTS app ON CLUSTER cluster'
     @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_ADMIN_PASSWORD} \
         -q 'CREATE DATABASE IF NOT EXISTS mon ON CLUSTER cluster'
     @docker compose --profile app run --rm dp init
 
+
 cn-s3-debug:
     curl -X PUT $CONNECT_ADDR/admin/loggers/io.confluent.connect.s3 \
         -H "Content-Type: application/json" \
         -d '{"level": "DEBUG"}'
 
+
 ch-sh DB:
     @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_DEFAULT_PASSWORD} \
         -d {{DB}}
 
+
 log CONTAINER:
     @docker compose logs --no-log-prefix --tail 100 -f {{CONTAINER}}
+
 
 down:
     @docker compose stop app-1
@@ -66,11 +88,18 @@ down:
     @docker compose down
     # @docker compose down -v
 
+
+perf:
+    @docker compose run --rm wrkx -c 100 -t 2 -d 60s -R 40000 -s /src/post_locations.lua http://app:8000/api/track/locations -- 10000
+
+
 prev-upload:
     @docker compose run aws aws --endpoint-url http://s3:9000 s3 cp --recursive /data/prev/app.app.track_locations s3://data/topics/app.app.track_locations
 
+
 prev-download:
     @docker compose run aws aws --endpoint-url http://s3:9000 s3 cp --recursive s3://data/topics/app.app.track_locations /data/prev/app.app.track_locations
+
 
 clean:
     @rm -rf data/sink/*

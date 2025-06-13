@@ -51,7 +51,7 @@ services:
     image: percona/mongodb_exporter:0.44.0
     restart: on-failure
     ports:
-      - 9216:9216
+      - 19216:9216
     environment:
       MONGODB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@m-1:27017/admin,mongodb://${MONGO_USER}:${MONGO_PASSWORD}@m-2:27017/admin,mongodb://${MONGO_USER}:${MONGO_PASSWORD}@m-3:27017/admin
     command:
