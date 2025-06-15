@@ -176,10 +176,38 @@ static_resources:
                     - name: clickhouse_http_service
                       domains: ["*"]
                       routes:
+                        - match:
+                            prefix: "/"
+                            headers:
+                              - name: ":method"
+                                exact_match: "OPTIONS"
+                          direct_response:
+                            status: 204
+                            body:
+                              inline_string: ""
+                          response_headers_to_add:
+                              - header:
+                                  key: "Access-Control-Allow-Origin"
+                                  value: "*"
+                              - header:
+                                  key: "Access-Control-Allow-Methods"
+                                  value: "GET, POST, OPTIONS"
+                              - header:
+                                  key: "Access-Control-Allow-Headers"
+                                  value: "Content-Type, X-Correlation-ID"
+                              - header:
+                                  key: "Access-Control-Max-Age"
+                                  value: "86400"
                         - match: { prefix: "/" }
                           route:
                             cluster: clickhouse_cluster_http
                             timeout: 0s
+                            cors:
+                              allow_origin_string_match:
+                                - exact: "*"
+                              allow_methods: "GET, POST, OPTIONS"
+                              allow_headers: "Content-Type, X-Correlation-ID"
+                              max_age: "86400"
                 http_filters:
                   # - name: envoy.filters.http.tap
                   #   typed_config:
@@ -193,6 +221,9 @@ static_resources:
                   #             - format: JSON_BODY_AS_STRING
                   #               file_per_tap:
                   #                 path_prefix: "/tmp/envoy_tap"
+                  - name: envoy.filters.http.cors
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.cors.v3.Cors
                   - name: envoy.filters.http.router
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
@@ -219,6 +250,34 @@ static_resources:
                         # text_format: "[%START_TIME%] connection from %DOWNSTREAM_REMOTE_ADDRESS% to %UPSTREAM_HOST% sent %BYTES_SENT% bytes, received %BYTES_RECEIVED% bytes\n"
                         json_format:
                           backend: clickhouse-tcp
+                          start_time: "%START_TIME%"
+                          downstream: "%DOWNSTREAM_REMOTE_ADDRESS%"
+                          upstream: "%UPSTREAM_HOST%"
+                          bytes_sent: "%BYTES_SENT%"
+                          bytes_received: "%BYTES_RECEIVED%"
+
+    - name: mongodb_tcp
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 27017
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.tcp_proxy
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+                stat_prefix: mongodb_tcp
+                cluster: mongodb_cluster
+                idle_timeout: 0s  # disables idle timeout
+                max_connect_attempts: 3
+                access_log:
+                  - name: envoy.access_loggers.stdout
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.access_loggers.stream.v3.StdoutAccessLog
+                      log_format:
+                        # text_format: "[%START_TIME%] connection from %DOWNSTREAM_REMOTE_ADDRESS% to %UPSTREAM_HOST% sent %BYTES_SENT% bytes, received %BYTES_RECEIVED% bytes\n"
+                        json_format:
+                          backend: mongodb-tcp
                           start_time: "%START_TIME%"
                           downstream: "%DOWNSTREAM_REMOTE_ADDRESS%"
                           upstream: "%UPSTREAM_HOST%"
@@ -349,6 +408,11 @@ static_resources:
                     socket_address:
                       address: s3-3
                       port_value: 9000
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: s3-4
+                      port_value: 9000
 
     - name: clickhouse_cluster
       type: STRICT_DNS
@@ -416,6 +480,30 @@ static_resources:
                     socket_address:
                       address: ch-3
                       port_value: 8123
+
+    - name: mongodb_cluster
+      type: STRICT_DNS
+      connect_timeout: 1s
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: mongodb_cluster
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: m-1
+                      port_value: 27017
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: m-2
+                      port_value: 27017
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: m-3
+                      port_value: 27017
 
 admin:
   access_log_path: /dev/stdout

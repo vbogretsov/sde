@@ -118,13 +118,6 @@
       </s3_cache>
     </disks>
     <policies>
-      <s3_cache>
-        <volumes>
-          <main>
-            <disk>s3_cache</disk>
-          </main>
-        </volumes>
-      </s3_cache>
       <s3_main>
         <volumes>
           <main>
@@ -142,12 +135,5 @@
      <events>true</events>
      <asynchronous_metrics>true</asynchronous_metrics>
   </prometheus>
-
-  <filesystem_caches>
-    <cache_for_s3>
-      <path>/var/lib/clickhouse/s3_cache/</path>
-      <max_size>10Gi</max_size>
-    </cache_for_s3>
-  </filesystem_caches>
 
 </clickhouse>

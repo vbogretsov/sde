@@ -47,6 +47,10 @@ services:
     extends:
       file: env/minio/docker-compose.yml
       service: s3-3
+  s3-4:
+    extends:
+      file: env/minio/docker-compose.yml
+      service: s3-4
   # Red Panda
   # p-1:
   #   extends:
@@ -136,6 +140,10 @@ services:
     extends:
       file: env/clickhouse/docker-compose.yml
       service: ch-3
+  ch-ui:
+    extends:
+      file: env/clickhouse/docker-compose.yml
+      service: ch-ui
   # Application
   app-init:
     extends:
@@ -218,9 +226,14 @@ volumes:
   ch-1: null
   ch-2: null
   ch-3: null
-  s3-1: null
-  s3-2: null
-  s3-3: null
+  s3-1-1: null
+  s3-1-2: null
+  s3-2-1: null
+  s3-2-2: null
+  s3-3-1: null
+  s3-3-2: null
+  s3-4-1: null
+  s3-4-2: null
   v-1: null
 
 networks:

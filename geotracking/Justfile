@@ -15,8 +15,8 @@ init:
     @just cn-init
 
 
-m-sh:
-    @docker compose exec m-2 mongosh \
+m-sh CONTAINER:
+    @docker compose exec {{CONTAINER}} mongosh \
         -u $MONGO_USER \
         -p $MONGO_PASSWORD \
         --authenticationDatabase admin $MONGO_DATABASE
@@ -72,6 +72,11 @@ ch-sh DB:
     @clickhouse client --port ${CHPORT} --password ${CLICKHOUSE_DEFAULT_PASSWORD} \
         -d {{DB}}
 
+ch-q CONTAINER QUERY:
+    @docker compose exec {{CONTAINER}} clickhouse-client \
+        --password ${CLICKHOUSE_DEFAULT_PASSWORD} \
+        -q "{{QUERY}}"
+
 
 log CONTAINER:
     @docker compose logs --no-log-prefix --tail 100 -f {{CONTAINER}}
@@ -99,6 +104,26 @@ prev-upload:
 
 prev-download:
     @docker compose run aws aws --endpoint-url http://s3:9000 s3 cp --recursive s3://data/topics/app.app.track_locations /data/prev/app.app.track_locations
+
+
+
+[working-directory: 'app/fe']
+web:
+    @npm run dev
+
+
+[working-directory: 'bin/emulate']
+emulate NUM_USERS="5000" CONCURRENCY="250" MIN_USER_ID="1":
+    #!/usr/bin/env bash
+    export NUM_USERS={{NUM_USERS}}
+    export CONCURRENCY={{CONCURRENCY}}
+    export MIN_USER_ID={{MIN_USER_ID}}
+    source .dlpath
+
+    while true; do
+        env DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH node emulate.js
+        sleep 3
+    done
 
 
 clean:

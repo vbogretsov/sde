@@ -20,24 +20,24 @@ ORDER BY (time, tag)
 SETTINGS storage_policy = 's3_main';
 """
 
-TRACK_LOCATIONS = """
-CREATE TABLE app.raw_track_locations
-ON CLUSTER cluster
-(
-   `_id`            String,
-   `_cid`           String,
-   `updated_at`     DateTime64(3, 'UTC'),
-   `lat`            Float64,
-   `lng`            Float64,
-   `__op`           String,
-   `__ts_ms`        Int64,
-)
-ENGINE = S3(s3_track_locations)
-PARTITION BY toUInt32(formatDateTime(updated_at, '%Y%m%d%H'))
-SETTINGS
-    filesystem_cache_name = 'cache_for_s3',
-    enable_filesystem_cache = 1;
-"""
+# TRACK_LOCATIONS = """
+# CREATE TABLE app.raw_track_locations
+# ON CLUSTER cluster
+# (
+#    `_id`            String,
+#    `_cid`           String,
+#    `updated_at`     DateTime64(3, 'UTC'),
+#    `lat`            Float64,
+#    `lng`            Float64,
+#    `__op`           String,
+#    `__ts_ms`        Int64,
+# )
+# ENGINE = S3(s3_track_locations)
+# PARTITION BY toUInt32(formatDateTime(updated_at, '%Y%m%d%H'))
+# SETTINGS
+#     filesystem_cache_name = 'cache_for_s3',
+#     enable_filesystem_cache = 1;
+# """
 
 TRACK_LOCATIONS = """
 CREATE TABLE app.track_locations

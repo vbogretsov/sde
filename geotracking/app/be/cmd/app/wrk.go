@@ -101,7 +101,7 @@ func runWrk(ctx context.Context, _ *cli.Command) error {
 					if msg.Topic == "" {
 						continue
 					}
-					slog.Info(
+					slog.Debug(
 						"going to commit offset",
 						slog.Any("topic", msg.Topic),
 						slog.Any("partition", msg.Partition),

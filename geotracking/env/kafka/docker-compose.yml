@@ -13,6 +13,8 @@ services:
     image: kafka:3.9.1
     build: .
     restart: on-failure
+    ports:
+      - 17701:7071
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
@@ -39,6 +41,8 @@ services:
   b-2:
     image: kafka:3.9.1
     restart: on-failure
+    ports:
+      - 27701:7071
     environment:
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: broker,controller
@@ -65,6 +69,8 @@ services:
   b-3:
     image: kafka:3.9.1
     restart: on-failure
+    ports:
+      - 37701:7071
     environment:
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: broker,controller

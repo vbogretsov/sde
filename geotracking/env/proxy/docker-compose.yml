@@ -7,6 +7,7 @@ services:
       - 9001:9001
       - 8123:8123
       - 9901:9901
+      - 27017:27017
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
     networks:

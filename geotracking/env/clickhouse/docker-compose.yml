@@ -79,3 +79,13 @@ services:
       - ./etc/keeper.xml:/etc/clickhouse-server/keeper_config.xml
       - ch-3:/var/lib/clickhouse
     depends_on: [chk-1, chk-2, chk-3]
+  ch-ui:
+    image: ghcr.io/caioricciuti/ch-ui:latest
+    restart: always
+    ports:
+      - 5521:5521
+    environment:
+      VITE_CLICKHOUSE_URL: http://localhost:8123
+      VITE_CLICKHOUSE_USER: default
+      VITE_CLICKHOUSE_PASS: app
+      VITE_CLICKHOUSE_USE_ADVANCED: true

@@ -10,7 +10,7 @@ services:
       log.format: json
       log.timestmap.field: date
     environment:
-      LOG_LEVEL: ${APP_LOG_LEVEL}
+      LOG_LEVEL: INFO
       MONGO_ADDRESS: ${MONGO_ADDRESS}
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}

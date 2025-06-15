@@ -26,7 +26,7 @@ scrape_configs:
   - job_name: minio-expoter
     metrics_path: /minio/v2/metrics/cluster
     static_configs:
-      - targets: ['s3-1:9000', 's3-2:9000', 's3-3:9000']
+      - targets: ['s3-1:9000', 's3-2:9000', 's3-3:9000', 's3-4:9000']
   - job_name: clickhouse-expoter
     static_configs:
       - targets: ['ch-1:9126', 'ch-2:9126', 'ch-3:9126']
